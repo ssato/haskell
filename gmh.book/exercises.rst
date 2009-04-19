@@ -177,4 +177,53 @@ compile and run it in ghci:
     *Init>
 
 
+3. Types and classes
+====================
+
+1.
+
+::
+
+    ['a', 'b', 'c'] => "abc" :: [Char]
+    ('a', 'b', 'c') :: (Char, Char, Char)
+    [(False, '0'), (True, '1')] :: [(Bool, Char)]
+    ([False, True], ['0', '1']) :: ([Bool], [Char])
+    [tail, init, reverse] :: [[a] -> [a]]
+
+Confirm with ghci:
+::
+
+    $ ghci
+    GHCi, version 6.10.1: http://www.haskell.org/ghc/:? for help
+    Loading package ghc-prim ... linking ... done.
+    Loading package integer ... linking ... done.
+    Loading package base ... linking ... done.
+    Prelude> :t ['a', 'b', 'c']
+    ['a', 'b', 'c'] :: [Char]
+    Prelude> :t ('a', 'b', 'c')
+    ('a', 'b', 'c') :: (Char, Char, Char)
+    Prelude> :t [(False, '0'), (True, '1')]
+    [(False, '0'), (True, '1')] :: [(Bool, Char)]
+    Prelude> :t ([False, True], ['0', '1'])
+    ([False, True], ['0', '1']) :: ([Bool], [Char])
+    Prelude> :t [tail, init, reverse]
+    [tail, init, reverse] :: [[a] -> [a]]
+    Prelude> ^DLeaving GHCi.
+    $
+
+2. 
+
+::
+
+    second :: [a] -> a
+    swap :: (a, b) -> (b, a)
+    pair :: a -> b -> (a, b)
+    double :: Int -> Int
+    palindrome :: [a] -> Bool
+    twice :: a -> a -> a
+
+
+
+
+
 .. vim:sw=4:ts=4:et:ai:si:sm:
