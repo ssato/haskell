@@ -101,8 +101,80 @@ Priorities of operators: ^ > * > +, -
 incorrect indents
 
 
-4. 
+4. see 2/last.hs
 
+::
+
+    Hugs> :load 2/last.hs
+    Main> last_1 [1,2,3,4,5]
+    5
+    Main> last_2 [1,2,3,4,5]
+    5
+    Main> :reload
+    Main> last_3 [1,2,3,4,5]
+    5
+    Main> last_3 [1,2,3,4,5, 6]
+    6
+    Hugs> :reload
+    Main> last_4 [1,2,3,4,5,6,7]
+    7
+    Main> last_4 []
+     
+    Program error: Given list is empty!
+     
+    Main>
+
+
+Testing with ghci:
+
+::
+
+    *Last> quickCheck prop_last_1
+    Loading package syb ... linking ... done.
+    Loading package base-3.0.3.0 ... linking ... done.
+    Loading package old-locale-1.0.0.1 ... linking ... done.
+    Loading package old-time-1.0.0.1 ... linking ... done.
+    Loading package random-1.0.0.1 ... linking ... done.
+    Loading package QuickCheck-1.2.0.0 ... linking ... done.
+    OK, passed 100 tests.
+    *Last> quickCheck prop_last_2
+    OK, passed 100 tests.
+    *Last> quickCheck prop_last_3
+    OK, passed 100 tests.
+    *Last> quickCheck prop_last_4
+    OK, passed 100 tests.
+    *Last>
+
+
+5. 2/init.hs
+
+compile and run it in ghci:
+
+::
+
+    Prelude> :load 2/init.hs
+    [1 of 1] Compiling Init             ( 2/init.hs, interpreted )
+    Ok, modules loaded: Init.
+    *Init> init [1,2,3,4,5]
+    [1,2,3,4]
+    *Init> init_1 [1,2,3,4,5]
+    Loading package syb ... linking ... done.
+    Loading package base-3.0.3.0 ... linking ... done.
+    Loading package old-locale-1.0.0.1 ... linking ... done.
+    Loading package old-time-1.0.0.1 ... linking ... done.
+    Loading package random-1.0.0.1 ... linking ... done.
+    Loading package QuickCheck-1.2.0.0 ... linking ... done.
+    [1,2,3,4]
+    *Init> init_2 [1,2,3,4,5]
+    [1,2,3,4]
+    *Init> QuickCheck prop_init_1
+        
+    <interactive>:1:0: Not in scope: data constructor `QuickCheck'
+    *Init> quickCheck prop_init_1
+    OK, passed 100 tests.
+    *Init> quickCheck prop_init_2
+    OK, passed 100 tests.
+    *Init>
 
 
 .. vim:sw=4:ts=4:et:ai:si:sm:
