@@ -219,9 +219,36 @@ Confirm with ghci:
     swap :: (a, b) -> (b, a)
     pair :: a -> b -> (a, b)
     double :: Int -> Int
-    palindrome :: [a] -> Bool
-    twice :: a -> a -> a
+    palindrome :: Eq a => [a] -> Bool
+    twice :: (a -> a) -> a -> a
 
+
+tryed with ghci.
+
+::
+
+    $
+    GHCi, version 6.10.1: http://www.haskell.org/ghc/  :? for help
+    Loading package ghc-prim ... linking ... done.
+    Loading package integer ... linking ... done.
+    Loading package base ... linking ... done.
+    Prelude> :load 3/functions.hs
+    [1 of 1] Compiling Main             ( 3/functions.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> :t second
+    second :: [a] -> a
+    *Main> :t swap
+    swap :: (t, t1) -> (t1, t)
+    *Main> :t pair
+    pair :: t -> t1 -> (t, t1)
+    *Main> :t double
+    double :: (Num a) => a -> a
+    *Main> :t palindrome
+    palindrome :: (Eq a) => [a] -> Bool
+    *Main> :t twice
+    twice :: (t -> t) -> t -> t
+    *Main> ^DLeaving GHCi.
+    $
 
 
 
