@@ -252,5 +252,53 @@ tryed with ghci.
 
 
 
+4. Defining functions
+========================
+
+1. 4/halve.hs
+
+::
+
+    Prelude> :load ./4//halve.hs
+    [1 of 1] Compiling Halve            ( 4/halve.hs, interpreted )
+    Ok, modules loaded: Halve.
+    *Halve> quickCheck prop_halve
+    Loading package syb ... linking ... done.
+    Loading package base-3.0.3.0 ... linking ... done.
+    Loading package old-locale-1.0.0.1 ... linking ... done.
+    Loading package old-time-1.0.0.1 ... linking ... done.
+    Loading package random-1.0.0.1 ... linking ... done.
+    Loading package QuickCheck-1.2.0.0 ... linking ... done.
+    OK, passed 100 tests.
+    *Halve> halve [1..10]
+    ([1,2,3,4,5],[6,7,8,9,10])
+    *Halve>
+
+
+2. 4/safetail.hs
+
+::
+
+    Prelude> :reload
+    [1 of 1] Compiling Safetail         ( 4/safetail.hs, interpreted )
+    Ok, modules loaded: Safetail.
+    *Safetail> quickCheck prop_safetail_c
+    OK, passed 100 tests.
+    *Safetail> quickCheck prop_safetail_a
+    OK, passed 100 tests.
+    *Safetail> quickCheck prop_safetail_b
+    OK, passed 100 tests.
+    *Safetail>
+
+
+3, 4, 5: 4/logicalops.hs
+
+6.
+
+::
+
+    mult x y z = x * y * z ==> \x -> (\y -> y + z)
+
+
 
 .. vim:sw=4:ts=4:et:ai:si:sm:
