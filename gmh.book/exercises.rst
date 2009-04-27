@@ -303,6 +303,123 @@ tryed with ghci.
 5. List comprehensions
 ========================
 
+5.1 Generators
+------------------------
+
+::
+    Prelude> [(x,y) | x <- [1..5], y <- [6,7]]
+    [(1,6),(1,7),(2,6),(2,7),(3,6),(3,7),(4,6),(4,7),(5,6),(5,7)]
+    Prelude> [(x,y) | x <- [1..3], y <- [x..3]]
+    [(1,1),(1,2),(1,3),(2,2),(2,3),(3,3)]
+    Prelude> :load ./5/1.hs
+    [1 of 1] Compiling Main             ( 5/1.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> concat' [[1,2],[3,4,5]]
+    Loading package syb ... linking ... done.
+    Loading package base-3.0.3.0 ... linking ... done.
+    Loading package old-locale-1.0.0.1 ... linking ... done.
+    Loading package old-time-1.0.0.1 ... linking ... done.
+    Loading package random-1.0.0.1 ... linking ... done.
+    Loading package QuickCheck-1.2.0.0 ... linking ... done.
+    [1,2,3,4,5]
+    *Main> firsts' [(1,2),(3,4),(5,6)]
+    [1,3,5]
+    *Main> length' [1,3..100]
+    50
+    *Main>
+
+
+5.2 Guards
+------------------
+
+::
+
+    *Main> :load ./5/2.hs
+    [1 of 1] Compiling Main             ( 5/2.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> factors 15
+    [1,3,5,15]
+    *Main> prime 15
+    False
+    *Main> prime 7
+    True
+    *Main> primes 20
+    [2,3,5,7,11,13,17,19]
+    *Main> find 'c' [('c',0), ('a',2), ('b',3), ('c',7)]
+    [0,7]
+    *Main>
+
+
+5.3 The zip function
+----------------------------
+
+::
+
+    *Main> :load ./5/3.hs
+    [1 of 1] Compiling Main             ( 5/3.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> zip' "abcd" [1..5]
+    [('a',1),('b',2),('c',3),('d',4)]
+    *Main> pairs' [1..5]
+    [(1,2),(2,3),(3,4),(4,5)]
+    *Main>
+
+
+::
+
+    *Main> :reload
+    Ok, modules loaded: Main.
+    *Main> runTestTT tests
+    Cases: 4  Tried: 4  Errors: 0  Failures: 0
+    Counts {cases = 4, tried = 4, errors = 0, failures = 0}
+    *Main> quickCheck prop_zip'
+    OK, passed 100 tests.
+    *Main> quickCheck prop_zip''
+    OK, passed 100 tests.
+    *Main>
+
+
+5.4 String comprehensions
+-------------------------------------
+
+::
+
+    *Main> :load ./5/4.hs
+    [1 of 1] Compiling Main             ( 5/4.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> runTestTT tests
+    Cases: 2  Tried: 2  Errors: 0  Failures: 0
+    Counts {cases = 2, tried = 2, errors = 0, failures = 0}
+    *Main>
+
+
+::
+
+    Prelude> :load ./5//caesar.hs
+    [1 of 1] Compiling Caesar           ( 5/caesar.hs, interpreted )
+    Ok, modules loaded: Caesar.
+    *Caesar> runTestTT tests
+    Cases: 11  Tried: 11  Errors: 0  Failures: 0
+    Counts {cases = 11, tried = 11, errors = 0, failures = 0}
+    *Caesar> freqs "abbcccddddeeeee"
+    [6.666667,13.333334,20.0,26.666668,33.333336,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+    *Caesar>
+
+::
+
+    Prelude> :load ./5//caesar.hs
+    [1 of 1] Compiling Caesar           ( 5/caesar.hs, interpreted )
+    Ok, modules loaded: Caesar.
+    *Caesar> runTestTT tests
+    Cases: 12  Tried: 12  Errors: 0  Failures: 0
+    Counts {cases = 12, tried = 12, errors = 0, failures = 0}
+    *Caesar>
+
+
+
+5.7 Excercises
+-------------------
+
 1.
 
 ::
@@ -330,6 +447,127 @@ tryed with ghci.
     *Main>
 
 
+3. 
 
- 
+::
+
+    *Main> :load ./5/pyths.hs
+    [1 of 1] Compiling Main             ( 5/pyths.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> tests
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    *Main> pyths 10
+    [(3,4,5),(4,3,5),(6,8,10),(8,6,10)]
+    *Main> pyths 15
+    [(3,4,5),(4,3,5),(5,12,13),(6,8,10),(8,6,10),(9,12,15),(12,5,13),(12,9,15)]
+    *Main> pyths' 15
+    [(3,4,5),(5,12,13),(6,8,10),(9,12,15)]
+    *Main>
+
+
+4. 
+
+::
+
+    *Main> :load ./5/perfects.hs
+    [1 of 1] Compiling Main             ( 5/perfects.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> quicktests
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    *Main> factors 15
+    [1,3,5,15]
+    *Main> factors' 15
+    [1,3,5]
+    *Main> perfects 500
+    [6,28,496]
+    *Main>
+
+
+::
+
+    *Main> :load ./5/perfects.hs
+    [1 of 1] Compiling Main             ( 5/perfects.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> quicktests
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    *Main>
+
+
+5.
+
+
+x = 1, y = [4..6]; x = 2, y = [4..6], ...
+
+::
+
+    $ ghci
+    GHCi, version 6.10.1: http://www.haskell.org/ghc/  :? for help
+    Loading package ghc-prim ... linking ... done.
+    Loading package integer ... linking ... done.
+    Loading package base ... linking ... done.
+    Prelude> [(x,y) | x <- [1,2,3], y <- [4,5,6]]
+    [(1,4),(1,5),(1,6),(2,4),(2,5),(2,6),(3,4),(3,5),(3,6)]
+    Prelude> :i concat
+    concat :: [[a]] -> [a]  -- Defined in GHC.List
+    Prelude> concat [[(x,y) | y <- [4,5,6]] | x <- [1,2,3]]
+    [(1,4),(1,5),(1,6),(2,4),(2,5),(2,6),(3,4),(3,5),(3,6)]
+    Prelude> ^DLeaving GHCi.
+    $
+
+
+6. 
+
+::
+
+    *Main> :load ./5/positions.hs
+    [1 of 1] Compiling Main             ( 5/positions.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> quicktests
+    OK, passed 100 tests.
+    *Main> positions 1 [1,2,3,1]
+    [0,3]
+    *Main> positions' 1 [1,2,3,1]
+    [0,3]
+    *Main>
+
+7.
+
+::
+
+    *Main> :load ./5/scalarproduct.hs
+    [1 of 1] Compiling Main             ( 5/scalarproduct.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> runtests
+    Cases: 1  Tried: 1  Errors: 0  Failures: 0
+    Counts {cases = 1, tried = 1, errors = 0, failures = 0}
+    *Main> scalarproduct [1,2,3] [4,5,6]
+    32
+    *Main>
+
+
+8.
+
+modify let2int, int2let and shift to support uppercase letters.
+
+::
+
+    *Caesar2> :load ./5/caesar2.hs
+    [1 of 1] Compiling Caesar2          ( 5/caesar2.hs, interpreted )
+    Ok, modules loaded: Caesar2.
+    *Caesar2> runtests
+    Cases: 18  Tried: 18  Errors: 0  Failures: 0
+    Counts {cases = 18, tried = 18, errors = 0, failures = 0}
+    *Caesar2> encode 5 "Haskell is fun"
+    "Mfxpjqq nx kzs"
+    *Caesar2> encode (-5) (encode 5 "Haskell is fun")
+    "Haskell is fun"
+    *Caesar2>
+
+
 .. vim:sw=4:ts=4:et:ai:si:sm:
