@@ -307,6 +307,7 @@ tryed with ghci.
 ------------------------
 
 ::
+
     Prelude> [(x,y) | x <- [1..5], y <- [6,7]]
     [(1,6),(1,7),(2,6),(2,7),(3,6),(3,7),(4,6),(4,7),(5,6),(5,7)]
     Prelude> [(x,y) | x <- [1..3], y <- [x..3]]
@@ -568,6 +569,83 @@ modify let2int, int2let and shift to support uppercase letters.
     *Caesar2> encode (-5) (encode 5 "Haskell is fun")
     "Haskell is fun"
     *Caesar2>
+
+
+6. Recursive functions
+========================================
+
+
+6.1 Basic concepts
+------------------------------
+
+::
+
+    Prelude> :load ./6/1.hs
+    [1 of 1] Compiling Main             ( 6/1.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> quicktests
+    Falsifiable, after 0 tests:
+    3
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    *Main>
+
+
+6.2 Recursion on lists
+--------------------------------
+
+::
+
+    Prelude> :load ./6/2.hs
+    [1 of 1] Compiling Main             ( 6/2.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> quicktests
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    *Main>
+
+
+6.3 Multiple arguments
+-----------------------------
+
+::
+
+    Prelude> :load ./6/3.hs
+    [1 of 1] Compiling Main             ( 6/3.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> quicktests
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    *Main>
+
+
+6.8 Exercises
+-------------------------
+
+Made answers except for merge sort implementation.
+
+::
+
+    *Main> :load ./6/8.hs
+    [1 of 1] Compiling Main             ( 6/8.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> runtests
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    Cases: 2  Tried: 2  Errors: 0  Failures: 0
+    Counts {cases = 2, tried = 2, errors = 0, failures = 0}
+    *Main>
 
 
 .. vim:sw=4:ts=4:et:ai:si:sm:
