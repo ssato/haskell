@@ -648,4 +648,103 @@ Made answers except for merge sort implementation.
     *Main>
 
 
+7. Higher order functions
+=================================
+
+7.2 Processing lists
+------------------------
+
+::
+
+    Prelude> :load ./7/2.hs
+    [1 of 1] Compiling Main             ( 7/2.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> map' (+1) [1,3..10]
+    [2,4,6,8,10]
+    *Main> map'' (+1) [1,3..10]
+    [2,4,6,8,10]
+    *Main> Data.List.map (+1) [1,3..10]
+    [2,4,6,8,10]
+    *Main> filter' even [1..10]
+    [2,4,6,8,10]
+    *Main> filter'' even [1..10]
+    [2,4,6,8,10]
+    *Main> Data.List.filter even [1..10]
+    [2,4,6,8,10]
+    *Main> sumsqreven [1..10]
+    220
+    *Main>
+
+
+7.3 The foldr function
+---------------------------
+
+::
+
+    Prelude> :load ./7//3.hs
+    [1 of 1] Compiling Main             ( 7/3.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> runtests
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    *Main>
+
+
+7.4 The foldl function
+---------------------------
+
+::
+
+    *Main> :load ./7//4.hs
+    [1 of 1] Compiling Main             ( 7/4.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> runtests
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    *Main>
+
+
+7.5 The composition operator
+----------------------------------
+
+::
+
+    *Main> :load ./7//5.hs
+    [1 of 1] Compiling Main             ( 7/5.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> let odd = not ... even
+    *Main> odd 3
+    True
+    *Main> odd 4
+    False
+    *Main> let twice = \f -> f ... f
+    *Main> twice (\x -> x + 3) 2
+    8
+    *Main>
+
+7.6 String transmitter
+-----------------------------------
+
+::
+
+    *Main> :load ./7//6.hs
+    [1 of 1] Compiling Main             ( 7/6.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> runtests
+    Cases: 7  Tried: 7  Errors: 0  Failures: 0
+    Counts {cases = 7, tried = 7, errors = 0, failures = 0}
+    *Main>
+
+
+7.8 Exercises
+-------------------------
+
+
+
+
 .. vim:sw=4:ts=4:et:ai:si:sm:
