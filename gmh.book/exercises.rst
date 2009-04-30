@@ -744,6 +744,63 @@ Made answers except for merge sort implementation.
 7.8 Exercises
 -------------------------
 
+::
+
+    *Main> :load ./7/exercises.hs
+    [1 of 1] Compiling Main             ( 7/exercises.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> runtests
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    OK, passed 100 tests.
+    Cases: 7  Tried: 7  Errors: 0  Failures: 0
+    Counts {cases = 7, tried = 7, errors = 0, failures = 0}
+    *Main>
+
+6:
+
+::
+
+    *Main> let g = curry (\(x,y) -> x + y :: Int)
+    *Main> let g' = curry' (\(x,y) -> x + y :: Int)
+    *Main> g 1 2
+    3
+    *Main> g' 1 2
+    3
+    *Main> let h = uncurry g
+    *Main> let h' = uncurry g'
+    *Main> h (3,4)
+    7
+    *Main> h' (3,4)
+    7
+    *Main>
+
+
+7,8:
+
+::
+
+    *Main> :load ./7/exercises.hs
+    [1 of 1] Compiling Main             ( 7/exercises.hs, interpreted )
+    Ok, modules loaded: Main.
+    *Main> encode' "Haskell is fun"
+    [0,0,0,0,1,0,0,1,0,1,1,0,0,0,0,1,1,0,1,1,1,0,0,1,1,1,0,1,1,1,0,1,0,1,1,0,0,1,0,1,0,0,1,1,0,0,0,0,1,1,0,1,1,0,0,0,0,1,1,0,1,1,0,1,0,0,0,0,0,1,0,0,0,1,0,0,1,0,1,1,0,1,1,1,0,0,1,1,1,0,1,0,0,0,0,0,1,0,0,0,0,1,1,0,0,1,1,0,1,1,0,1,0,1,1,1,0,1,0,1,1,1,0,1,1,0]
+    *Main> let r0 = encode' "Haskell is fun"
+    *Main> let bs0 = encode' "Haskell is fun"
+    *Main> length bs0
+    126
+    *Main> length "Haskell is fun"
+    14
+    *Main> 14 * 8
+    112
+    *Main> decode' bs0
+    "Haskell is fun"
+    *Main> let fchan = tail :: [Bit] -> [Bit] -- erronous channel
+    *Main> let transmit' = decode' . fchan . encode'
+    *Main> transmit' "Haskell is fun"
+    "*** Exception: Parity check failed
+    *Main>
 
 
 
