@@ -5,6 +5,7 @@
 module Main where
 
 import Char
+import Data.List
 import Test.QuickCheck hiding (test)
 import Test.HUnit
 
@@ -15,6 +16,7 @@ unittests = Test.HUnit.test [
         "any' ==> False" ~: any' even [1,3..9] ~?= False,
         "takeWhile'" ~: takeWhile' odd [1,3,5,6,7,8,9,10] ~?= [1,3,5],
         "dropWhile'" ~: dropWhile' odd [1,3,5,6,7,8,9,10] ~?= [6,7,8,9,10],
+        "iterate''" ~: take 10 (iterate'' (*2) 1) ~?= take 10 (iterate (*2) 1), -- [1,2,4,8,16,32,64,128,256,512],
         "dec2int'" ~: dec2int [2,3,4,0] ~?= 2340
         ]
 
@@ -34,10 +36,15 @@ prop_filter' xs = filter' f xs == filter f xs
         where types = xs::[Int]
               f = odd
 
+prop_map'' xs = map'' f xs == map f xs
+        where types = xs::[Int]
+              f = (+2)
+
 runtests = do quickCheck prop_all'
               quickCheck prop_any'
               quickCheck prop_map'
               quickCheck prop_filter'
+              quickCheck prop_map''
               runTestTT unittests
 
 -- 1. [f x | x <- xs, p x] ==> map f (filter p xs)
@@ -104,6 +111,7 @@ uncurry' f = \(x,y) -> f x y
 
 
 -- 7. unfold
+-- p -> predicate, h -> head, t -> tail
 unfold p h t x | p x       = []
                | otherwise = h x : unfold p h t (t x)
 
@@ -112,8 +120,11 @@ int2bin' = unfold (== 0) (`mod` 2) (`div` 2)
 chop8' = unfold null (take 8) (drop 8)
 
 -- FIXME:
--- map'' f = unfold null f id
--- iterate' f = unfold (== 0) id f
+map'' f = unfold null (f . hd) tl
+        where hd (x:xs) = x
+              tl (x:xs) = xs
+
+iterate'' f = unfold (\_ -> False) id f
 
 
 -- 8. 
