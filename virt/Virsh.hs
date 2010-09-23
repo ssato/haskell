@@ -7,6 +7,7 @@
 module Main where
 
 import Control.Monad
+import Data.List
 import System.Environment(getArgs)
 import System.Process(readProcessWithExitCode)
 import System.Exit(exitWith, ExitCode(ExitSuccess))
@@ -15,6 +16,7 @@ import Text.Printf
 
 
 type VirshCmd = String  -- TODO: make it limited to valid commands only.
+type VmName = String
 
 
 runVirsh :: VirshCmd -> [String] -> IO String
@@ -29,26 +31,39 @@ matches :: String -> String -> [String]
 matches s p = let r@((_,_,_,ss)) = s =~ p :: (String, String, String, [String]) in ss
 
 
-list :: IO [[String]]
-list = runVirsh "list" ["--all"] >>= return . vms
-    where vms :: String -> [[String]] -- [[VmId, VmName, VmState]]
-          vms c = [ms | l <- lines c, let ms = matches l " (-|[[:digit:]]+) ([^[:space:]]+) +(.+)", ms /= []]
+parse :: String -> String -> [[String]]
+parse p c = [ms | l <- lines c, let ms = matches l p, ms /= []]
 
 
-vmNames :: IO [String]
-vmNames = do { vs <- list; return [(\x@(a:b:c:_) -> b) v | v <- vs] }
+list' :: VirshCmd -> String -> IO [[String]]
+list' c p = runVirsh c ["--all"] >>= return . (parse p)
 
 
-findVm :: String -> IO Bool
-findVm v = vmNames >>= return . elem v
+list :: VirshCmd -> IO [[String]]
+list c = case c of
+           "list" -> list' c " (-|[[:digit:]]+) ([^[:space:]]+) +(.+)"
+           _      -> list' c "([^[:space:]]+) +([^[:space:]]+) +(.+)" >>= return . tail
+
+
+vmExists :: VmName -> IO Bool
+vmExists x = vms >>= return . elem x
+    where vms = do { xs <- list "list"; return [(\y@(_:n:_) -> n) x | x <- xs] }
 
 
 listVms :: IO ()
-listVms = list >>= mapM_ (\x@(a:b:c:_) -> printf "id=%s, name=%s, status=%s\n" a b c)
+listVms = list "list" >>= mapM_ (\x@(a:b:c:_) -> printf "id=%s, name=%s, status=%s\n" a b c)
 
+
+listXs :: VirshCmd -> IO ()
+listXs c = list c >>= mapM_ (\x@(a:b:_) -> printf "name=%s, status=%s\n" a b)
 
 
 main :: IO ()
-main = listVms
+main = do args <- getArgs
+          case args of
+            c:cs | c == "list" -> listVms
+            c:cs | isInfixOf "list" c -> listXs c
+            c:cs | otherwise -> runVirsh c cs >>= putStr
+            _ -> error "Usage: Virsh VIRSH_COMMAND [OPTIONS...]"
 
 -- vim: set sw=4 ts=4 et:
