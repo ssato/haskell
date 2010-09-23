@@ -64,6 +64,6 @@ main = do args <- getArgs
             c:cs | c == "list" -> listVms
             c:cs | isInfixOf "list" c -> listXs c
             c:cs | otherwise -> runVirsh c cs >>= putStr
-            _ -> error "Usage: Hvirsh VIRSH_COMMAND [OPTIONS...]"
+            _ -> error "\n\nUsage: Hvirsh VIRSH_COMMAND [OPTIONS...]"
 
 -- vim: set sw=4 ts=4 et:
