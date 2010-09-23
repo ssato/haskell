@@ -22,9 +22,7 @@ type VmName = String
 runVirsh :: VirshCmd -> [String] -> IO String
 runVirsh c opts =
     do (rc,out,err) <- readProcessWithExitCode "virsh" (c:opts) ""
-       if rc == ExitSuccess
-           then return out
-           else error $ "Failed: 'virsh " ++ c ++ " " ++ unwords opts ++ "': " ++ err
+       if rc == ExitSuccess then return out else error err
 
 
 matches :: String -> String -> [String]
