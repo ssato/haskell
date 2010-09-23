@@ -10,7 +10,7 @@ import Control.Monad
 import Data.List
 import System.Environment(getArgs)
 import System.Process(readProcessWithExitCode)
-import System.Exit(exitWith, ExitCode(ExitSuccess))
+import System.Exit
 import Text.Regex.Posix
 import Text.Printf
 
@@ -64,6 +64,6 @@ main = do args <- getArgs
             c:cs | c == "list" -> listVms
             c:cs | isInfixOf "list" c -> listXs c
             c:cs | otherwise -> runVirsh c cs >>= putStr
-            _ -> error "\n\nUsage: Hvirsh VIRSH_COMMAND [OPTIONS...]"
+            _ -> putStr "Usage: Hvirsh VIRSH_COMMAND [OPTIONS...]\n" >> exitFailure
 
 -- vim: set sw=4 ts=4 et:
