@@ -24,7 +24,7 @@ runVirsh c opts =
     do (rc,out,err) <- readProcessWithExitCode "virsh" (c:opts) ""
        if rc == ExitSuccess
            then return out
-           else fail $ "Failed: sudo virsh " ++ c ++ " " ++ unwords opts ++ ": " ++ err
+           else fail $ "Failed: virsh " ++ c ++ " " ++ unwords opts ++ ": " ++ err
 
 
 matches :: String -> String -> [String]
