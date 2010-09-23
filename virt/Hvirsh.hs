@@ -1,5 +1,5 @@
 --
--- Libvirt's virsh wrapper in Haskell
+-- Libvirt's virsh (thin) wrapper in Haskell
 --
 -- Copyright (c) 2010 Satoru SATOH <ssato@redhat.com>
 -- GPL version 3 or later.
@@ -21,7 +21,6 @@ type VmName = String
 
 runVirsh :: VirshCmd -> [String] -> IO String
 runVirsh c opts =
-    --
     do (rc,out,err) <- readProcessWithExitCode "virsh" (c:opts) ""
        if rc == ExitSuccess
            then return out
