@@ -21,7 +21,8 @@ type VmName = String
 
 runVirsh :: VirshCmd -> [String] -> IO String
 runVirsh c opts =
-    do (rc,out,err) <- readProcessWithExitCode "sudo" ("virsh":c:opts) ""
+    --
+    do (rc,out,err) <- readProcessWithExitCode "virsh" (c:opts) ""
        if rc == ExitSuccess
            then return out
            else fail $ "Failed: sudo virsh " ++ c ++ " " ++ unwords opts ++ ": " ++ err
