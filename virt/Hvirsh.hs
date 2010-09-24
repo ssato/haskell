@@ -4,7 +4,7 @@
 -- Copyright (c) 2010 Satoru SATOH <ssato@redhat.com>
 -- GPL version 3 or later.
 --
-module Main where
+module Main (main) where
 
 import Control.Monad
 import Data.List
@@ -20,9 +20,8 @@ type VmName = String
 
 
 runVirsh :: VirshCmd -> [String] -> IO String
-runVirsh c opts =
-    do (rc,out,err) <- readProcessWithExitCode "virsh" (c:opts) ""
-       if rc == ExitSuccess then return out else error err
+runVirsh c opts = do (rc,out,err) <- readProcessWithExitCode "virsh" (c:opts) ""
+                     if rc == ExitSuccess then return out else error err
 
 
 matches :: String -> String -> [String]
@@ -34,18 +33,16 @@ parse p c = [ms | l <- lines c, let ms = matches l p, ms /= []]
 
 
 list' :: VirshCmd -> String -> IO [[String]]
-list' c p = runVirsh c ["--all"] >>= return . (parse p)
+list' p c = runVirsh c ["--all"] >>= return . (parse p)
 
 
 list :: VirshCmd -> IO [[String]]
-list c = case c of
-           "list" -> list' c " (-|[[:digit:]]+) ([^[:space:]]+) +(.+)"
-           _      -> list' c "([^[:space:]]+) +([^[:space:]]+) +(.+)" >>= return . tail
+list c | c == "list" = list' " (-|[[:digit:]]+) ([^[:space:]]+) +(.+)" c
+       | otherwise   = list' "([^[:space:]]+) +([^[:space:]]+) +(.+)" c >>= return . tail
 
 
 vmExists :: VmName -> IO Bool
-vmExists x = vms >>= return . elem x
-    where vms = do { xs <- list "list"; return [(\y@(_:n:_) -> n) x | x <- xs] }
+vmExists x = list "list" >>= return . (elem x) . map (\v@(_:n:_) -> n)
 
 
 listVms :: IO ()
@@ -59,9 +56,11 @@ listXs c = list c >>= mapM_ (\x@(a:b:_) -> printf "name=%s, status=%s\n" a b)
 main :: IO ()
 main = do args <- getArgs
           case args of
-            c:cs | c == "list" -> listVms
-            c:cs | isInfixOf "list" c -> listXs c
-            c:cs | otherwise -> runVirsh c cs >>= putStr
+            c:v:_ | c == "find" -> do { e <- vmExists v; if e then exitSuccess else exitFailure; }
+            c:_   | c == "list" -> listVms
+            c:_   | isInfixOf "list" c -> listXs c
+            c:cs  | otherwise -> runVirsh c cs >>= putStr
             _ -> putStr "Usage: Hvirsh VIRSH_COMMAND [OPTIONS...]\n" >> exitFailure
+
 
 -- vim: set sw=4 ts=4 et:
