@@ -44,7 +44,7 @@ list c | c == "list" = list' " (-|[[:digit:]]+) ([^[:space:]]+) +(.+)" c
 
 
 vmExists :: VmName -> IO Bool
-vmExists x =  list "list" >>= elem x . map (\v@(_ : n : _) -> n)
+vmExists x =  list "list" >>= return . elem x . map (\v@(_ : n : _) -> n)
 -- hlint suggests this:
 -- vmExists x = fmap (elem x . map (\v@(_ : n : _) -> n)) (list "list")
 
