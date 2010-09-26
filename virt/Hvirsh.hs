@@ -33,7 +33,9 @@ parse p c = [ms | l <- lines c, let ms = matches l p, ms /= []]
 
 
 list' :: VirshCmd -> String -> IO [[String]]
-list' p c = fmap (parse p) (runVirsh c ["--all"])
+list' p c = runVirsh c ["--all"] >>= return . parse p
+-- hlint suggests this:
+-- list' p c = fmap (parse p) (runVirsh c ["--all"])
 
 
 list :: VirshCmd -> IO [[String]]
@@ -42,8 +44,9 @@ list c | c == "list" = list' " (-|[[:digit:]]+) ([^[:space:]]+) +(.+)" c
 
 
 vmExists :: VmName -> IO Bool
--- vmExists x =  list "list" >>= elem x . map (\v@(_ : n : _) -> n)
-vmExists x = fmap (elem x . map (\v@(_ : n : _) -> n)) (list "list")
+vmExists x =  list "list" >>= elem x . map (\v@(_ : n : _) -> n)
+-- hlint suggests this:
+-- vmExists x = fmap (elem x . map (\v@(_ : n : _) -> n)) (list "list")
 
 
 listVms :: IO ()
