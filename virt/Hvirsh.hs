@@ -25,7 +25,7 @@ runVirsh c opts = do (rc,out,err) <- readProcessWithExitCode "virsh" (c:opts) ""
 
 
 matches :: String -> String -> [String]
-matches s p = let r@((_,_,_,ss)) = s =~ p :: (String, String, String, [String]) in ss
+matches s p = let r@(_,_,_,ss) = s =~ p :: (String, String, String, [String]) in ss
 
 
 parse :: String -> String -> [[String]]
@@ -33,16 +33,17 @@ parse p c = [ms | l <- lines c, let ms = matches l p, ms /= []]
 
 
 list' :: VirshCmd -> String -> IO [[String]]
-list' p c = runVirsh c ["--all"] >>= return . (parse p)
+list' p c = fmap (parse p) (runVirsh c ["--all"])
 
 
 list :: VirshCmd -> IO [[String]]
 list c | c == "list" = list' " (-|[[:digit:]]+) ([^[:space:]]+) +(.+)" c
-       | otherwise   = list' "([^[:space:]]+) +([^[:space:]]+) +(.+)" c >>= return . tail
+       | otherwise   = fmap tail (list' "([^[:space:]]+) +([^[:space:]]+) +(.+)" c)
 
 
 vmExists :: VmName -> IO Bool
-vmExists x = list "list" >>= return . (elem x) . map (\v@(_:n:_) -> n)
+-- vmExists x =  list "list" >>= elem x . map (\v@(_ : n : _) -> n)
+vmExists x = fmap (elem x . map (\v@(_ : n : _) -> n)) (list "list")
 
 
 listVms :: IO ()
