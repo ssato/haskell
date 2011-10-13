@@ -1,0 +1,86 @@
+ssato@localhost% ghci
+GHCi, version 6.12.3: http://www.haskell.org/ghc/  :? for help
+Loading package ghc-prim ... linking ... done.
+Loading package integer-gmp ... linking ... done.
+Loading package base ... linking ... done.
+Loading package ffi-1.0 ... linking ... done.
+ghci> 2 + 3
+5
+ghci> 2 - 3
+-1
+ghci> 2 * 3
+6
+ghci> 7 `div` 2
+3
+ghci> div 7 2
+3
+ghci> 2 ^ 3
+8
+ghci> head [1, 2, 3, 4, 5]
+1
+ghci> head [1..5]
+1
+ghci> tail [1..5]
+[2,3,4,5]
+ghci> [1..5] !! 2
+3
+ghci> [1, 2, 3, 4, 5] !! 2
+3
+ghci> take 3 [1, 2, 3, 4, 5]
+[1,2,3]
+ghci> drop 3 [1, 2, 3, 4, 5]
+[4,5]
+ghci> length  [1, 2, 3, 4, 5]
+5
+ghci> sum [1, 2, 3, 4, 5]
+15
+ghci> product [1, 2, 3, 4, 5]
+120
+ghci> [1, 2, 3] ++ [4, 5]
+[1,2,3,4,5]
+ghci> reverse  [1, 2, 3, 4, 5]
+[5,4,3,2,1]
+ghci> reverse  [1..5]
+[5,4,3,2,1]
+ghci> 1 `div` 0
+*** Exception: divide by zero
+ghci> head []
+*** Exception: Prelude.head: empty list
+ghci> :l 2/
+log      init.hs  test.hs  last.hs
+ghci> :l 2/test.hs
+[1 of 1] Compiling Double           ( 2/test.hs, interpreted )
+Ok, modules loaded: Double.
+ghci> qu
+quadruple             quickCheck            quickCheckResult      quickCheckWith        quickCheckWithResult  quot                  quotRem
+ghci> quadruple 10
+Loading package array-0.3.0.1 ... linking ... done.
+Loading package containers-0.3.0.0 ... linking ... done.
+Loading package filepath-1.1.0.4 ... linking ... done.
+Loading package old-locale-1.0.0.2 ... linking ... done.
+Loading package old-time-1.0.0.5 ... linking ... done.
+Loading package unix-2.4.0.2 ... linking ... done.
+Loading package directory-1.0.1.1 ... linking ... done.
+Loading package pretty-1.0.1.1 ... linking ... done.
+Loading package process-1.0.1.3 ... linking ... done.
+Loading package Cabal-1.8.0.6 ... linking ... done.
+Loading package bytestring-0.9.1.7 ... linking ... done.
+Loading package ghc-binary-0.5.0.2 ... linking ... done.
+Loading package bin-package-db-0.0.0.0 ... linking ... done.
+Loading package hpc-0.5.0.5 ... linking ... done.
+Loading package template-haskell ... linking ... done.
+Loading package ghc-6.12.3 ... linking ... done.
+Loading package time-1.1.4 ... linking ... done.
+Loading package random-1.0.0.2 ... linking ... done.
+Loading package extensible-exceptions-0.1.1.1 ... linking ... done.
+Loading package mtl-1.1.0.2 ... linking ... done.
+Loading package QuickCheck-2.1.1.1 ... linking ... done.
+Loading package HUnit-1.2.2.1 ... linking ... done.
+40
+ghci> take (double 2) [1..6]
+[1,2,3,4]
+ghci> factorial 10
+3628800
+ghci> average [1..5]
+3
+ghci>
