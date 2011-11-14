@@ -1,0 +1,12 @@
+ghci> :t quickCheck
+quickCheck :: (Testable prop) => prop -> IO ()
+ghci> :l 4/logicalops.hs
+[1 of 1] Compiling Logicalops       ( 4/logicalops.hs, interpreted )
+Ok, modules loaded: Logicalops.
+ghci> runtests
++++ OK, passed 100 tests.
++++ OK, passed 100 tests.
++++ OK, passed 100 tests.
++++ OK, passed 100 tests.
++++ OK, passed 100 tests.
+ghci>

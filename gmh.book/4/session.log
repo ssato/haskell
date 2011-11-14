@@ -1,0 +1,58 @@
+ssato@localhost% ghci                                                                                     ~/repos/public/github.com/ssato/haskell.git/gmh.book
+GHCi, version 6.12.3: http://www.haskell.org/ghc/  :? for help
+Loading package ghc-prim ... linking ... done.
+Loading package integer-gmp ... linking ... done.
+Loading package base ... linking ... done.
+Loading package ffi-1.0 ... linking ... done.
+ghci> let isDigit c = c >= '0' && c <= '9'
+ghci> :t isDigit
+isDigit :: Char -> Bool
+ghci> isDigit '9'
+True
+ghci> isDigit 'a'
+False
+ghci> let even n = n `mod` 2 == 0
+ghci> :t even
+even :: (Integral a) => a -> Bool
+ghci> even 10
+True
+ghci> even 9
+False
+ghci> let splitAt n xs = (take n xs, drop n xs)
+ghci> :t splitAt
+splitAt :: Int -> [a] -> ([a], [a])
+ghci> splitAt 3 [1..5]
+([1,2,3],[4,5])
+ghci> let recip n = 1 / n
+ghci> :t re
+read        readIO      readLn      reads       realToFrac  recip       repeat      return
+readFile    readList    readParen   readsPrec   recip       rem         replicate   reverse
+ghci> :t recip
+recip :: (Fractional t) => t -> t
+ghci> recip 10
+0.1
+ghci> let recip' = (/) 1
+ghci> recip' 10
+0.1
+ghci> :t re
+read        readIO      readLn      reads       realToFrac  recip       rem         replicate   reverse
+readFile    readList    readParen   readsPrec   recip       recip'      repeat      return
+ghci> :t recip'
+recip' :: Double -> Double
+ghci>
+ghci> let abs n = if n >= 0 then n else -n
+ghci> :t abs
+abs :: (Num a, Ord a) => a -> a
+ghci> abs 3
+3
+ghci> abs -4
+
+<interactive>:1:0:
+    No instance for (Num (a -> a))
+      arising from a use of `-' at <interactive>:1:0-5
+    Possible fix: add an instance declaration for (Num (a -> a))
+    In the expression: abs - 4
+    In the definition of `it': it = abs - 4
+ghci> abs (-4)
+4
+ghci>
