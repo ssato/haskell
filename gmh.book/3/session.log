@@ -1,0 +1,42 @@
+ssato@localhost% ghci
+GHCi, version 7.0.2: http://www.haskell.org/ghc/  :? for help
+Loading package ghc-prim ... linking ... done.
+Loading package integer-gmp ... linking ... done.
+Loading package base ... linking ... done.
+ghci> :t ['a', 'b', 'c']
+['a', 'b', 'c'] :: [Char]
+ghci> :t ('a', 'b', 'c')
+('a', 'b', 'c') :: (Char, Char, Char)
+ghci> :t [(False, 'o'), (True, '1')]
+[(False, 'o'), (True, '1')] :: [(Bool, Char)]
+ghci> :t ([False, True], ['0', '1'])
+([False, True], ['0', '1']) :: ([Bool], [Char])
+ghci> :t [tail, init, reverse]
+[tail, init, reverse] :: [[a] -> [a]]
+ghci> let second xs = head $ tail xs
+ghci> :t second
+second :: [a] -> a
+ghci> let second' = head . tail
+ghci> :t second'
+second' :: [c] -> c
+ghci> let swap (x, y) = (y, x)
+ghci> :t swap
+swap :: (t1, t) -> (t, t1)
+ghci> let pair x y = (x, y)
+ghci> :t pair
+pair :: t -> t1 -> (t, t1)
+ghci> let double x = x * 2
+ghci> :t double
+double :: Num a => a -> a
+ghci> let palindrome xs = reverse xs == xs
+ghci> :t palindrome
+palindrome :: Eq a => [a] -> Bool
+ghci> let twice f x = f $ f x
+ghci> :t twice
+twice :: (t -> t) -> t -> t
+ghci> let twice' f = f . f
+ghci> :t twice'
+twice' :: (a -> a) -> a -> a
+ghci>
+Leaving GHCi.
+ssato@localhost%
