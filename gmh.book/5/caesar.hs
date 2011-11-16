@@ -1,9 +1,9 @@
 --
 -- 5.5 The Caesar cipher
 --
-module Caesar where
+module CaesarCipher where
 
-import Char
+import Data.Char
 import Data.List
 
 import Test.QuickCheck
@@ -58,8 +58,8 @@ rotate n xs = drop n xs ++ take n xs
 
 -- utility functions 
 positions :: Eq a => a -> [a] -> [Int]
-positions x xs = [i | (x', i) <- zip xs [0..n], x == x']
-    where n = length xs - 1
+positions c cs = [i | (c', i) <- zip cs [0..n], c == c']
+    where n = length cs - 1
 
 -- find most likely shift factor that was used to encode the string and try
 -- decoding the string
@@ -84,20 +84,29 @@ unittests = Test.HUnit.test [
     ,"encode 3 \"Haskell is fun\"" ~: encode 3 "Haskell is fun" ~?= "Hdvnhoo lv ixq"
     ,"encode (-3) \"Hdvnhoo lv ixq\"" ~: encode (-3) "Hdvnhoo lv ixq" ~?= "Haskell is fun"
     ,"rotate" ~: rotate 3 [1..5] ~?= [4,5,1,2,3]
+    ,"crack" ~: crack (encode 3 "Haskell is fun") ~?= "Haskell is fun"
     ]
 
 
-isAlphaLower :: Char -> Bool
-isAlphaLower c = elem c ['a'..'z']
+isLowerAlpha :: Char -> Bool
+isLowerAlpha c = c `elem` ['a'..'z']
 
-prop_let2int_int2let c = isAlphaLower c ==> int2let (let2int c) == c
+
+{- FIXME: This conflicts with Test.QuickCheck.Arbitrary.Char:
+
+instance Arbitrary Char where
+    arbitrary = choose ['a'..'z']
+-}
+
+prop_let2int_int2let c = isLowerAlpha c ==> int2let (let2int c) == c
     where types = c :: Char
 
-prop_shift n c = isAlphaLower c && n >= 0 ==> shift (- n) (shift n c) == c
+prop_shift n c = isLowerAlpha c ==> shift (- n) (shift n c) == c
     where types = (c :: Char, n :: Int)
 
 runtests = do runTestTT unittests
               quickCheckWith stdArgs {maxSuccess=20} prop_let2int_int2let
               quickCheckWith stdArgs {maxSuccess=20} prop_shift
+
 
 -- vim:sw=4 ts=4 et:
