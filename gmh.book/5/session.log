@@ -1,0 +1,112 @@
+ssato@localhost% ghci
+GHCi, version 6.12.3: http://www.haskell.org/ghc/  :? for help
+Loading package ghc-prim ... linking ... done.
+Loading package integer-gmp ... linking ... done.
+Loading package base ... linking ... done.
+Loading package ffi-1.0 ... linking ... done.
+ghci> let concat' xss = [x | xs <- xss, x <- xs]
+ghci> concat' [[1,2], [3], [4]]
+[1,2,3,4]
+ghci> :t concat'
+concat' :: [[t]] -> [t]
+ghci> let firsts ps = [x | (x, _) <- ps]
+ghci> :t firsts
+firsts :: [(t, t1)] -> [t]
+ghci> firsts [(1, 2), (2, 3 / 0)]
+[1,2]
+ghci> let length' xs = sum [1 | _ <- xs]
+ghci> :t length'
+length' :: (Num t1) => [t] -> t1
+ghci> length' [1..10]
+10
+ghci> length' [1, 2 / 0]
+2
+ghci> 2 / 0
+Infinity
+ghci> -- different solutions w/o list comprehension
+ghci> let length' = foldl (\_ -> (1 +)) 0
+ghci> length' [1..10]
+11
+ghci> length' []
+0
+ghci> -- 5.2 Guards
+ghci> let factors' n = [x | x <- [1..n], n `mod` x == 0]
+ghci> let factors n = [x | x <- [1..n], n `mod` x == 0]
+ghci> let factors' n = filter (\x -> n `mod` x == 0) [1..n]
+ghci> factors 10
+[1,2,5,10]
+ghci> fa
+factors   factors'  factors'  fail
+ghci> factors' 10
+[1,2,5,10]
+ghci> factors 15
+[1,3,5,15]
+ghci> factors' 15
+[1,3,5,15]
+ghci> let isPrime n = factors n == [1, n]
+ghci> isPrime 15
+False
+ghci> isPrime 7
+True
+ghci> factors 7
+[1,7]
+ghci> let primes n = [x | x <- [2..n], isPrime x]
+ghci> pri
+primes  print
+ghci> primes 100
+[2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97]
+ghci> let find k t = [v | (k', v) <- t, k == k']
+ghci> find 'b' [('a', 1), ('b', 2), ('c', 3), ('d', 4)]
+[2]
+ghci> find 'b' [('a', 1), ('b', 2), ('c', 3), ('b', 4)]
+[2,4]
+ghci> -- 5.3 using zip
+ghci> zip "abc" "def"
+[('a','d'),('b','e'),('c','f')]
+ghci> let pairs xs = zip xs $ tail xs
+ghci> pairs [1, 2, 3, 4]
+[(1,2),(2,3),(3,4)]
+ghci> :t pairs
+pairs :: [a] -> [(a, a)]
+ghci> let isSorted xs = and [x <= y | (x, y) <- pairs xs]
+ghci> isSorted [1, 2, 3]
+True
+ghci> isSorted [1, 2, 3, 2]
+False
+ghci> let positions x xs = [i | (x', i) <- zip xs [0..n],  x == x'] where n = length xs - 1
+ghci> positions False [True, False, False, True]
+[1,2]
+ghci> -- 5.4 String (type) is just a synonim of [Char]
+ghci> "abcdefg" !! 2
+'c'
+ghci> le
+length  lex
+ghci> length "abc"
+3
+ghci>
+ghci> -- count lower chars in string
+ghci> :m Data.Char
+ghci> let lowers xs = length [x | x <- xs, isLower x]
+ghci> :t lowers
+lowers :: [Char] -> Int
+ghci> lowers "Haskell"
+6
+ghci> -- another solutions
+ghci> let lowers' xs = sum [1 | x <- xs, isLower x]
+ghci> lowers' "Haskell"
+6
+ghci> lowers' "Haskell"
+6
+ghci> let count x xs = length [x' | x' <- xs, x == x']
+ghci> let count x = le
+length      lex         lexLitChar
+ghci> let count' x = length . filter (\x' -> x' == x)
+ghci> :t count
+count :: (Eq a) => a -> [a] -> Int
+ghci> :t count'
+count' :: (Eq a) => a -> [a] -> Int
+ghci> count 's' "Mississippi"
+4
+ghci> count' 's' "Mississippi"
+4
+ghci>
