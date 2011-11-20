@@ -1,65 +1,119 @@
 --
 -- 6.2 
 --
-module Main where
+module ListRecursionExamples where
 
-import Data.List
+import Data.List(sort)
+
 import Test.QuickCheck
-
-prop_product' ns = product' ns == Data.List.product ns
-        where types = ns::[Int]
-
-prop_length' ns = length' ns == Data.List.length ns
-        where types = ns::[Int]
-
-prop_reverse' ns = reverse' ns == Data.List.reverse ns
-        where types = ns::[Int]
-
-prop_reverse'_1 ns = reverse' (reverse' ns) == ns
-        where types = ns::[Int]
-
-prop_listjoin xs ys = (xs `listjoin` ys) == xs ++ ys
-        where types = (xs,ys) :: ([Int],[Int])
-
-prop_isort xs = isort xs == Data.List.sort xs
-        where types = xs :: [Int]
-
-quicktests = do quickCheck prop_product'
-                quickCheck prop_length'
-                quickCheck prop_reverse'
-                quickCheck prop_reverse'_1
-                quickCheck prop_listjoin
-                quickCheck prop_isort
+import Test.HUnit
 
 
--- product of elements in a list
+-- product
+-- recursive version:
+--
 product' :: Num a => [a] -> a
-product' []     = 1
-product' (n:ns) = n * product' ns
+product' [] = 1
+product' (x:xs) = x * product' xs
 
--- length of a list
+-- w/ fold version:
+-- product'' = foldl (\x -> \acc -> x * acc)
+product'' :: Num a => [a] -> a
+product'' = foldl (*) 1
+
+unittests_product = [
+     "product (recursive) []" ~: product' [] ~?= 1
+    ,"product (recursive) [2, 3, 4]" ~: product' [2, 3, 4] ~?= 24
+    ,"product (fold) []" ~: product'' [] ~?= 1
+    ,"product (fold) [2, 3, 4]" ~: product'' [2, 3, 4] ~?= 24
+    ]
+
+
+-- length:
+-- recursive:
 length' :: [a] -> Int
-length' []     = 0
+length' [] = 0
 length' (_:xs) = 1 + length' xs
 
--- reverse a list
-reverse' :: [a] -> [a]
-reverse' []     = []
-reverse' (x:xs) = reverse' xs ++ [x]
+unittests_length = [
+     "length (recursive) []" ~: length' [] ~?= 0
+    ,"length (recursive) [2, 3, 4]" ~: length' [2, 3, 4] ~?= 3
+    ]
 
--- ++
-listjoin :: [a] -> [a] -> [a]
-[] `listjoin` ys     = ys
-(x:xs) `listjoin` ys = x:(xs `listjoin` ys)
+
+-- reverse:
+-- recursive version:
+reverse' :: [a] -> [a]
+reverse' [] = []
+reverse' (x:xs) = reverse xs ++ [x]
+
+-- w/ fold version:
+-- reverse'' = foldr (\x -> \acc -> acc ++ [x]) []
+reverse'' :: [a] ->[a]
+reverse'' = foldr (\x -> \acc -> acc ++ [x]) []
+
+prop_reverse' xs = reverse' (reverse' xs) == xs
+    where types = xs :: [Int]
+
+prop_reverse'' xs = reverse'' (reverse'' xs) == xs
+    where types = xs :: [Int]
+
+
+-- append (++):
+-- recursive version:
+append :: [a] -> [a] -> [a]
+[] `append` ys = ys
+(x:xs) `append` ys = x:(xs `append` ys)
+
+unittests_append = [
+     "append (recursive) [] ys" ~: [] `append` [1..3] ~?= [1, 2, 3]
+    ,"append (recursive) xs ys" ~: [1..3] `append` [4..6] ~?= [1, 2, 3, 4, 5, 6]
+    ]
+
+
+-- insert: insert item into sorted list
+insert :: Ord a => a -> [a] -> [a]
+insert x [] = [x]
+insert x (y:ys) | x <= y = x:y:ys
+                | otherwise = y:insert x ys
+
+unittests_insert = [
+     "insert x []" ~: insert 0 [] ~?= []
+    ,"insert x xs" ~: insert 4 [1, 2, 4, 5] ~?= [1, 2, 3, 4, 5]
+    ]
+
+
+-- Is this list sorted?
+sorted :: Ord a => [a] -> Bool
+sorted xs = and [x <= y | (x,y) <- pairs' xs]
+    where pairs' xs = zip xs $ tail xs
+
+prop_insert x xs = sorted $ insert x $ sort xs
+    where types = (x :: Int, xs :: [Int])
+
 
 -- insertion sort
---
-insert' :: Ord a => a -> [a] -> [a]
-insert' x []                 = [x]
-insert' x (y:ys) | x <= y    = x:y:ys
-                | otherwise = y:insert' x ys
-
 isort :: Ord a => [a] -> [a]
-isort []     = []
-isort (x:xs) = insert' x (isort xs)
+isort [] = []
+isort (x:xs) = insert x $ isort xs
 
+prop_isort xs = sorted $ isort xs
+    where types = xs :: [Int]
+
+
+-- tests
+unittests = Test.HUnit.test [
+     unittests_product
+    ,unittests_length
+    ,unittests_append
+    ,unittests_insert 
+    ]
+
+runtests = do runTestTT unittests
+              quickCheck prop_reverse'
+              quickCheck prop_reverse''
+              quickCheck prop_insert
+              quickCheck prop_isort
+
+
+-- vim:sw=4 ts=4 et:

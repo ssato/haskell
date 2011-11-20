@@ -1,31 +1,56 @@
 --
 -- 6.1 Basic concepts
 --
-module Main where
+module RecursiveBasic where
 
 import Test.QuickCheck
-
-prop_factorial n = n > 1 ==> factorial n + 1 == (n + 1) * factorial n
-        where types = n::Int
-
-prop_factorial' n = n > 1 ==> factorial' n == factorial n
-        where types = n::Int
-
-prop_mult m n = m > 0 && n > 0 ==> m `mult` n == m * n
-        where types = (m,n) :: (Int,Int)
-
-quicktests = do quickCheck prop_factorial
-                quickCheck prop_factorial'
-                quickCheck prop_mult
 
 
 factorial :: Int -> Int
 factorial n = product [1..n]
+-- or: factorial = product (\n -> [1..n])   [point-free sytle]
 
 factorial' :: Int -> Int
-factorial' 0       = 1
-factorial' (n + 1) = (n + 1) * factorial' n
+factorial' 0 = 1
+-- deprecated n + k pattern:
+-- factorial' (n + 1) = (n + 1) * factorial' n
+factorial' 1 = 1
+factorial' n = n * factorial' (n - 1)
 
-mult :: Int -> Int -> Int
-m `mult` 0       = 0
-m `mult` (n + 1) = m + (m `mult` n)
+{- 
+
+  factorial' 4 
+= 4 * factorial' 3
+= 4 * (3 * factorial' 2)
+= 4 * (3 * (2 * factorial' 1)
+= 4 * (3 * (2 * 1)
+= 4 * (3 * 2)
+= 4 * 6
+= 24
+
+-}
+
+
+multi :: Int -> Int -> Int
+m `multi` 0 = 0
+-- deprecated n + k pattern:
+-- m `multi` (n + 1) = m + (m `multi` n)
+m `multi` 1 = m 
+m `multi` n = m + (m `multi` (n - 1))
+
+
+prop_factorial n = n > 1 && n < 1000 ==> factorial n == n * factorial (n - 1)
+    where types = n :: Int
+
+prop_factorial' n = n > 1 && n < 1000 ==> factorial' n == factorial n
+    where types = n :: Int
+
+prop_multi m n = m > 0 && n > 0 && n < 1000 ==> m `multi` n == m * n
+    where types = (m :: Int, n :: Int)
+
+runtests = do quickCheckWith stdArgs {maxSuccess=2} prop_factorial
+              quickCheckWith stdArgs {maxSuccess=2} prop_factorial'
+              quickCheckWith stdArgs {maxSuccess=2} prop_multi
+
+
+-- vim:sw=4 ts=4 et:
