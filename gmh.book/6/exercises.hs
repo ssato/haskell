@@ -134,12 +134,21 @@ elem_unittests = Test.HUnit.test [
 merge :: Ord a => [a] -> [a] -> [a]
 merge xs []                     = xs
 merge [] ys                     = ys
-merge (x:xs) (y:ys) | x <= y    = x:y:merge xs ys
-                    | otherwise = y:x:merge xs ys
+merge (x:xs) (y:ys) | x <= y    = x:merge xs (y:ys)
+                    | otherwise = y:merge (x:xs) ys
 
 merge_unittests = Test.HUnit.test [
      "merge [1, 3] [2, 4]" ~: merge [1, 3] [2, 4] ~?= [1, 2, 3, 4]
+    ,"merge [-1, 1, 3] [0, 4]" ~: merge [-1, 1, 3] [0, 4] ~?= [-1, 0, 1, 3, 4]
     ]
+
+-- Is this list sorted?
+sorted :: Ord a => [a] -> Bool
+sorted xs = and [x <= y | (x, y) <- pairs' xs]
+    where pairs' xs = zip xs $ tail xs
+
+prop_merge xs ys = sorted $ merge (sort xs) (sort ys)
+    where types = (xs :: [Int], ys :: [Int])
 
 
 -- 5. Merge sort
