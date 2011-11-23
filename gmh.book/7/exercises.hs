@@ -229,6 +229,11 @@ encode_tests = runTestTT $ Test.HUnit.test [
     where f :: String -> [Bit]
           f s = let bs = encode s in parity bs : bs
 
+prop_encode' s = encode' s == concat [f [c] | c <- s]
+    where types = s :: String
+          f :: String -> [Bit]
+          f s = let bs = encode s in parity bs : bs
+
 {-
 
 ghci> :l 7/exercises.hs
@@ -252,22 +257,86 @@ chop9_tests = runTestTT $ Test.HUnit.test [
     where bits = [encode' "a" | _ <- [0..2]]
 
 
+-- parity check
 pcheck :: [Bit] -> [Bit]
-pcheck bits | f bits    = bits'
+pcheck bits | f bits    = tail bits
             | otherwise = error "Parity check error!"
     where f :: [Bit] -> Bool
-          f bits = head bits == parity bits'
-          bits' = tail bits
+          f bits = head bits == (parity (tail bits))
+
+prop_pcheck n = pcheck bits == tail bits
+    where types = n :: Int
+          bits = let bs = make8 $ int2bin n in parity bs : bs
 
 
 decode' :: [Bit] -> String
 decode' = map (chr . bin2int . pcheck) . chop9
 
+prop_decode' s = decode' (encode' s) == s
+    where types = s :: String
+
+
+-- lost last bit of each char.
 channel' :: [Bit] -> [Bit]
-channel' = tail
+channel' = concat . map tail . chop9
 
 transmit' :: String -> String
 transmit' = decode' . channel' . encode'
+
+{-
+
+ghci> :l 7/exercises.hs
+[1 of 1] Compiling HigherOrderFunctionsExercises ( 7/exercises.hs, interpreted )
+Ok, modules loaded: HigherOrderFunctionsExercises.
+ghci> (decode' . channel' . encode') "abc"
+"*** Exception: Parity check error!
+ghci> (decode' . channel'' . encode') "abc"
+"\176*** Exception: Parity check error!
+ghci> let channel''' = concat . tail . chop9 :: [Bit] -> [Bit]  -- drop first char
+ghci> (decode' . channel''' . encode') "abc"
+"bc"
+ghci>
+
+-}
+
+
+-- run all tests:
+runtests = do q1_tests
+              q2_tests
+              q3_tests
+              q4_tests
+              q5_tests
+              q6_tests
+              q7_tests
+              parity_tests
+              encode_tests
+              chop9_tests
+              quickCheck prop_encode'
+              quickCheck prop_pcheck
+              quickCheck prop_decode'
+
+{-
+
+ghci> :l 7/exercises.hs
+[1 of 1] Compiling HigherOrderFunctionsExercises ( 7/exercises.hs, interpreted )
+Ok, modules loaded: HigherOrderFunctionsExercises.
+ghci> runtests
+Cases: 2  Tried: 2  Errors: 0  Failures: 0
+Cases: 6  Tried: 6  Errors: 0  Failures: 0
+Cases: 2  Tried: 2  Errors: 0  Failures: 0
+Cases: 1  Tried: 1  Errors: 0  Failures: 0
+Cases: 1  Tried: 1  Errors: 0  Failures: 0
+Cases: 2  Tried: 2  Errors: 0  Failures: 0
+Cases: 3  Tried: 3  Errors: 0  Failures: 0
+Cases: 2  Tried: 2  Errors: 0  Failures: 0
+Cases: 2  Tried: 2  Errors: 0  Failures: 0
+Cases: 1  Tried: 1  Errors: 0  Failures: 0
++++ OK, passed 100 tests.
++++ OK, passed 100 tests.
++++ OK, passed 100 tests.
+ghci>
+
+-}
 
 
 -- vim:sw=4 ts=4 et:
