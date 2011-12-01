@@ -1,0 +1,60 @@
+ghci> :l 8/Parsing.hs
+[1 of 1] Compiling Parsing          ( 8/Parsing.hs, interpreted )
+Ok, modules loaded: Parsing.
+ghci> parse (return 1) "abc"
+[(1,"abc")]
+ghci> parse failure "abc"
+[]
+ghci> parse item ""
+[]
+ghci> parse item "abc"
+[('a',"bc")]
+ghci> let p13 = do { c1 <- item; item; c3 <- item; return (c1, c3)}
+ghci> parse p13 "abcdef"
+[(('a','c'),"def")]
+ghci> parse p13 "ab"
+[]
+ghci> parse (item +++ return 'd') "abc"
+[('a',"bc")]
+ghci> parse (failure +++ return 'd') "abc"
+[('d',"abc")]
+ghci> parse (failure +++ failure) "abc"
+[]
+ghci> parse (char 'a') "abc"
+[('a',"bc")]
+ghci> parse digit "123"
+[('1',"23")]
+ghci> parse digit "abc"
+[]
+ghci> parse (char 'a') "123"
+[]
+ghci> parse ident "abc def"
+[("abc"," def")]
+ghci> parse nat "123 def"
+[(123," def")]
+ghci> parse space " def"
+[((),"def")]
+ghci> parse space "   def"
+[((),"def")]
+ghci> let space' = many (sat isSpace) >> return ()
+ghci> parse space' "   def"
+[((),"def")]
+ghci> parse identifier "abc def"
+[("abc","def")]
+ghci> parse natural "123 abc"
+[(123,"abc")]
+ghci> parse (symbol "abc") "abc def"
+[("abc","def")]
+ghci> parse (symbol "abc") "def"
+[]
+ghci> let symbol' = token . string
+ghci> parse (symbol' "abc") "abc def"
+[("abc","def")]
+ghci> parse (symbol' "abc") "123 def"
+[]
+ghci> let natlist = do { symbol "["; n <- natural; ns <- many (do { symbol ","; natural; }); symbol "]"; return (n:ns); }
+ghci> nat
+nat      natlist  natural
+ghci> parse natlist  "   [1,   2,3]  "
+[([1,2,3],"")]
+ghci>
