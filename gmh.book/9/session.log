@@ -1,0 +1,31 @@
+Prelude> :l SimpleTermlib.hs
+[1 of 1] Compiling SimpleTermlib    ( SimpleTermlib.hs, interpreted )
+Ok, modules loaded: SimpleTermlib.
+*SimpleTermlib> echo "aaa"
+
+<interactive>:1:1:
+    The function `echo' is applied to one argument,
+    but its type `IO ()' has none
+    In the expression: echo "aaa"
+    In an equation for `it': it = echo "aaa"
+*SimpleTermlib> echo
+"
+"
+*SimpleTermlib> echo
+a
+a
+*SimpleTermlib> putStr'
+putStr'   putStr''
+*SimpleTermlib> putStr' "Hello, world!\n"
+Hello, world!
+*SimpleTermlib> putStr'' "Hello, world!\n"
+Hello, world!
+*SimpleTermlib> putStrLn "Hello, world!\n"
+putStrLn   putStrLn'
+*SimpleTermlib> putStrLn' "Hello, world!"
+Hello, world!
+*SimpleTermlib> let strlen = do { putStr' "Enter a string: "; cs <- getLine'; putStr ("The string has " ++ (show (length cs)) ++ " chars.\n"); }
+*SimpleTermlib> strlen
+Enter a string: abcdef ghi jkl
+The string has 14 chars.
+*SimpleTermlib>
