@@ -89,10 +89,11 @@ nextgen b = survivors b ++ births b
 
 -- lifegame:
 life :: Board -> IO ()
-life b = cls >> (showcells b) >> wait t >> life (nextgen b)
-    where t = 5000
-          wait :: Int -> IO ()
-          wait t = seqn [return () | _ <- [1..t]]
+life b = cls >> (showcells b) >> wait 5000 >> life (nextgen b)
+
+
+wait :: Int -> IO ()
+wait t = seqn [return () | _ <- [1..t]]
 
 
 -- vim:sw=4 ts=4 et:
