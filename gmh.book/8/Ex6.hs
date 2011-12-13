@@ -1,6 +1,14 @@
+{-
+
+NatArith + some extentions (operator '-' and '/')
+
+ -}
 module Ex6 where
 
-import MonadicParser
+import MonadicParser hiding (runtests)
+
+import Test.HUnit
+import Test.QuickCheck
 
 
 -- expr ::= term ('+' expr | '-' expr | empty)
@@ -39,6 +47,19 @@ eval cs =  case (parse expr cs) of
               [(_, out)] -> error ("unused input: " ++ out)
               []         -> error ("invalid input: " ++ cs)
 
+
+runtests = do
+    runTestTT $ Test.HUnit.test [
+         "eval \"2 + 3\"" ~: eval "2 + 3" ~?= 5
+        ,"eval \"7 - 3\"" ~: eval "7 - 3" ~?= 4
+        ,"eval \"2 - 3\"" ~: eval "2 - 3" ~?= -1
+        ,"eval \"4 + 2 - 3\"" ~: eval "4 + 2 - 3" ~?= 3
+        ,"eval \"3 * 4\"" ~: eval "3 * 4" ~?= 12
+        ,"eval \"4 / 2\"" ~: eval "4 / 2" ~?= 2
+        ,"eval \"3 / 2\"" ~: eval "3 / 2" ~?= 1
+        ,"eval \"2 / 3\"" ~: eval "2 / 3" ~?= 0
+        ,"eval \"1 + 2 * 7 / 3 - 2\"" ~: eval "1 + 2 * 7 / 3 - 2" ~?= 3
+        ]
 
 {-
 session log:
