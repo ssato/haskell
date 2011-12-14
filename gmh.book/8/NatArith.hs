@@ -1,10 +1,10 @@
 {-
 Parser for simple natural number arithmetic expressions
 -}
-
 module NatArith where
 
-import MonadicParser
+import MonadicParser hiding (runtests)
+import Test.HUnit
 
 
 -- expr ::= term ('+' expr | empty)
@@ -38,6 +38,13 @@ eval cs =  case (parse expr cs) of
               []         -> error ("invalid input: " ++ cs)
 
 
+runtests = do
+    runTestTT $ Test.HUnit.test [
+         "eval \"2 + 3\"" ~: eval "2 + 3" ~?= 5
+        ,"eval \"3 * 4\"" ~: eval "3 * 4" ~?= 12
+        ,"eval \"1 + 2 * 7\"" ~: eval "1 + 2 * 7" ~?= 15
+        ]
+
 {-
 session log:
 
@@ -67,3 +74,5 @@ Leaving GHCi.
 ssato@localhost% 
 
 -}
+
+-- vim:sw=4 ts=4 et:
