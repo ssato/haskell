@@ -24,35 +24,14 @@ import XMonad.Util.EZConfig
 -- import XMonad.Prompt.Shell
 
 
-main = xmonad $ gnomeConfig
-    {
-    -- simple stuff
-    terminal           = "gnome-terminal",
-    focusFollowsMouse  = True,
-    borderWidth        = 1,
-    modMask            = myModMask,
-    numlockMask        = myNumlockMask,
-    workspaces         = myWorkspaces,
-    normalBorderColor  = myNormalBorderColor,
-    focusedBorderColor = myFocusedBorderColor,
-
-    manageHook = composeAll
-        [ manageHook gnomeConfig
-        , isFullscreen --> doFullFloat
-        ]
-
-    , logHook    = logHook gnomeConfig
-    }
-    `additionalKeysP` myKeymaps
-
-
-
 -- modMask lets you specify which modkey you want to use. The default
 -- is mod1Mask ("left alt").  You may also consider using mod3Mask
 -- ("right alt"), which does not conflict with emacs keybindings. The
 -- "windows key" is usually mod4Mask.
 --
-myModMask       = mod1Mask
+-- modMask' = mod1Mask
+modMask' = mod4Mask
+
 
 -- The mask for the numlock key. Numlock status is "masked" from the
 -- current modifier status, so the keybindings will work with numlock on or
@@ -67,7 +46,8 @@ myModMask       = mod1Mask
 -- Set numlockMask = 0 if you don't have a numlock key, or want to treat
 -- numlock status separately.
 --
-myNumlockMask   = mod2Mask
+numlockMask' = mod2Mask
+
 
 -- The default number of workspaces (virtual screens) and their names.
 -- By default we use numeric strings, but any string may be used as a
@@ -78,31 +58,43 @@ myNumlockMask   = mod2Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = map show [1..5]
-
--- Border colors for unfocused and focused windows, respectively.
---
-myNormalBorderColor  = "#dddddd"
-myFocusedBorderColor = "#ff0000"
-
-
--- Whether focus follows the mouse pointer.
-myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = True
+workspaces' = map show [1..5]
 
 
 myKeymaps = [
-            -- ("M-<F2>", shellPrompt defaultXPConfig )
-            ("M-<F2>", gnomeRun)
-
-            , ("M-C-<Left>",    prevWS )
-            , ("M-C-<Right>",   nextWS )
-            , ("M-S-<Left>",  shiftToPrev )
-            , ("M-S-<Right>", shiftToNext )
-
-            , ("M-S-q", spawn "gnome-session-save --gui --kill")
-            , ("M-S-l", spawn "gnome-screensaver-command -l")
+             ("M-<F2>", gnomeRun)
+            ,("M-C-<Left>", prevWS )
+            ,("M-C-<Right>", nextWS )
+            ,("M-S-<Left>", shiftToPrev )
+            ,("M-S-<Right>", shiftToNext )
+            ,("M-S-q", spawn "gnome-session-save --gui --kill")
+            ,("M-S-l", spawn "gnome-screensaver-command -l")
             ]
 
 
--- vim: set sw=4 ts=4 et:
+main = xmonad $ gnomeConfig
+    {
+     terminal           = "gnome-terminal"
+    ,focusFollowsMouse  = True
+    ,borderWidth        = 1
+    ,modMask            = modMask'
+    ,numlockMask        = numlockMask'
+    ,workspaces         = workspaces'
+    ,normalBorderColor  = "#dddddd"
+    ,focusedBorderColor = "#3366cc"
+    ,logHook            = logHook gnomeConfig
+    ,manageHook         = composeAll
+        [
+         manageHook gnomeConfig
+        ,isFullscreen                  --> doFullFloat
+        ,className =? "MPlayer"        --> doFloat
+        ,className =? "Gimp"           --> doFloat
+        ,className =? "Gnome-terminal" --> doShift "1"
+        ,className =? "Firefox"        --> doShift "2"
+        ,className =? "Thunderbird"    --> doShift "3"
+        ]
+    }
+    `additionalKeysP` myKeymaps
+
+
+-- vim:sw=4 ts=4 et:
