@@ -1,27 +1,27 @@
 --
--- xmonad config file:
+-- xmonad example config file.
 --
--- * w/o gnome
--- * w/ xmobar
--- * w/ trayer
+-- A template showing all available configuration hooks,
+-- and how to override the defaults in your own xmonad.hs conf file.
+--
+-- Normally, you'd only override those defaults you care about.
 --
 -- References:
---  * https://gist.github.com/1136051
+--  * http://www.haskell.org/haskellwiki/Xmonad/Using_xmonad_in_Gnome
+--  * http://d.hatena.ne.jp/mono-hate/20081210/1228915177
 --
 --
 
 import XMonad
 import System.Exit
-import System.IO
 
 import XMonad.Actions.CycleWS
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageDocks
+import XMonad.Config.Gnome
 import XMonad.Hooks.ManageHelpers 
-import XMonad.Prompt(defaultXPConfig)
-import XMonad.Prompt.Shell(shellPrompt)
 import XMonad.Util.EZConfig
-import XMonad.Util.Run(spawnPipe)
+
+-- import XMonad.Prompt
+-- import XMonad.Prompt.Shell
 
 
 -- modMask lets you specify which modkey you want to use. The default
@@ -62,7 +62,7 @@ workspaces' = map show [1..5]
 
 
 myKeymaps = [
-             ("M-<F2>", spawn "dmenu_run -nb black -nf white")
+             ("M-<F2>", gnomeRun)
             ,("M-C-<Left>", prevWS )
             ,("M-C-<Right>", nextWS )
             ,("M-S-<Left>", shiftToPrev )
@@ -72,7 +72,8 @@ myKeymaps = [
             ]
 
 
-defaults = defaultConfig {
+main = xmonad $ gnomeConfig
+    {
      terminal           = "gnome-terminal"
     ,focusFollowsMouse  = True
     ,borderWidth        = 1
@@ -81,9 +82,10 @@ defaults = defaultConfig {
     ,workspaces         = workspaces'
     ,normalBorderColor  = "#dddddd"
     ,focusedBorderColor = "#3366cc"
+    ,logHook            = logHook gnomeConfig
     ,manageHook         = composeAll
         [
-         manageDocks
+         manageHook gnomeConfig
         ,isFullscreen                  --> doFullFloat
         ,className =? "MPlayer"        --> doFloat
         ,className =? "Gimp"           --> doFloat
@@ -93,18 +95,6 @@ defaults = defaultConfig {
         ]
     }
     `additionalKeysP` myKeymaps
-
-myPP = xmobarPP { ppCurrent = xmobarColor "#429942" "" . wrap "<" ">" }
-
-toggleStrutsKey XConfig { XMonad.modMask = modMask } = (modMask, xK_b)
-
-
-main = do
-    spawn "trayer --edge top --align right --SetDockType true --SetPartialStrut false --expand true --transparent true --tint 0x000000 --alpha 255 --height 20"
-    spawn "nm-applet --sm-disable"
-    spawn "ibus-daemon -r -x"
-    spawn "xmodmap /home/ssato/.Xmodmap"
-    xmonad =<< statusBar "xmobar" myPP toggleStrutsKey defaults
 
 
 -- vim:sw=4 ts=4 et:
