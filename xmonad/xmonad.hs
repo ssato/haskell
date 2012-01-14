@@ -99,12 +99,7 @@ myPP = xmobarPP { ppCurrent = xmobarColor "#429942" "" . wrap "<" ">" }
 toggleStrutsKey XConfig { XMonad.modMask = modMask } = (modMask, xK_b)
 
 
-main = do
-    spawn "trayer --edge top --align right --SetDockType true --SetPartialStrut false --expand true --transparent true --tint 0x000000 --alpha 255 --height 20"
-    spawn "nm-applet --sm-disable"
-    spawn "ibus-daemon -r -x"
-    spawn "xmodmap /home/ssato/.Xmodmap"
-    xmonad =<< statusBar "xmobar" myPP toggleStrutsKey defaults
+main = xmonad =<< statusBar "xmobar" myPP toggleStrutsKey defaults
 
 
 -- vim:sw=4 ts=4 et:
