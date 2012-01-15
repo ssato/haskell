@@ -62,7 +62,7 @@ workspaces' = ["1:home", "2:web", "3:mail"] ++ map show [4..7]
 
 
 -- dmenu' = "dmenu_run -nb black -nf white")
-dmenu' = "yeganesh -x -- -nb black -nf white"
+dmenu' = "exe=`yeganesh -x -- -nb black -nf white` && eval \"exec $exe\""
 
 
 myKeymaps = [
