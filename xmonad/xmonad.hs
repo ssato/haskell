@@ -73,6 +73,9 @@ myKeymaps = [
             ,("M-S-<Right>", shiftToNext )
             ,("M-S-q", spawn "gnome-session-save --gui --kill")
             ,("M-S-l", spawn "gnome-screensaver-command -l")
+            ,("<XF86AudioMute>", spawn "amixer -q set Master toggle")
+            ,("<XF86AudioLowerVolume>", spawn "amixer -q set Master 10%-")
+            ,("<XF86AudioRaiseVolume>", spawn "amixer -q set Master 10%+")
             ]
 
 
@@ -91,10 +94,10 @@ defaults = defaultConfig {
         ,isFullscreen                  --> doFullFloat
         ,className =? "MPlayer"        --> doFloat
         ,className =? "Gimp"           --> doFloat
-        ,className =? "Gnome-terminal" --> doShift "1"
-        ,className =? "URxvt"          --> doShift "1"
-        ,className =? "Firefox"        --> doShift "2"
-        ,className =? "Thunderbird"    --> doShift "3"
+        ,className =? "Gnome-terminal" --> doShift "1:home"
+        ,className =? "URxvt"          --> doShift "1:home"
+        ,className =? "Firefox"        --> doShift "2:web"
+        ,className =? "Thunderbird"    --> doShift "3:mail"
         ]
     }
     `additionalKeysP` myKeymaps
