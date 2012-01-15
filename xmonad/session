@@ -17,6 +17,7 @@ export GNOME-KEYRING-PID
 gnome-keyring-daemon --start
 #export SSH_AUTH_SOCK="$GNOME_KEYRING_CONTROL/ssh"
 
+#xcompmgr -c C -f -F &
 
 trayer --edge top --align right --transparent true --tint 0x000000 --height 20 --alpha 255 &
 nm-applet --sm-disable &
