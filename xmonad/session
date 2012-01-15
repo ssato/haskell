@@ -26,5 +26,4 @@ ibus-daemon -r -x -d
 #xmodmap -merge $HOME/.Xmodmap
 #xrdb -merge $HOME/.Xresources
 
-$CK_XINIT_SESSION $SSH_AGENT xmoand
-
+$CK_XINIT_SESSION $SSH_AGENT xmonad
