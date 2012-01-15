@@ -7,7 +7,7 @@ urxvt*scrollBar: false
 !urxvt*scrollTtyOutput: false
 urxvt*termName: rxvt
 urxvt*transparent: true
-!urxvt*tint: 50
+urxvt*shading: 50
 
 urxvt*foreground: #ffffff
 urxvt*background: #000000
