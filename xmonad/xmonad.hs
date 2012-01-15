@@ -73,7 +73,7 @@ myKeymaps = [
 
 
 defaults = defaultConfig {
-     terminal           = "gnome-terminal"
+     terminal           = "urxvt"
     ,focusFollowsMouse  = True
     ,borderWidth        = 1
     ,modMask            = modMask'
@@ -88,6 +88,7 @@ defaults = defaultConfig {
         ,className =? "MPlayer"        --> doFloat
         ,className =? "Gimp"           --> doFloat
         ,className =? "Gnome-terminal" --> doShift "1"
+        ,className =? "URxvt"          --> doShift "1"
         ,className =? "Firefox"        --> doShift "2"
         ,className =? "Thunderbird"    --> doShift "3"
         ]

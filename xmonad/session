@@ -15,7 +15,7 @@ export GNOME-KEYRING-SOCKET
 export GNOME-KEYRING-PID
 
 gnome-keyring-daemon --start
-export SSH_AUTH_SOCK="$GNOME_KEYRING_CONTROL/ssh"
+#export SSH_AUTH_SOCK="$GNOME_KEYRING_CONTROL/ssh"
 
 
 trayer --edge top --align right --SetDockType true --SetPartialStrut false --expand true --transparent true --tint 0x000000 --alpha 255 --height 20 &
