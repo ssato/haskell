@@ -61,8 +61,12 @@ numlockMask' = mod2Mask
 workspaces' = ["1:home", "2:web", "3:mail"] ++ map show [4..7]
 
 
+-- dmenu' = "dmenu_run -nb black -nf white")
+dmenu' = "yeganesh -x -- -nb black -nf white"
+
+
 myKeymaps = [
-             ("M-<F2>", spawn "dmenu_run -nb black -nf white")
+             ("M-<F2>", spawn dmenu')
             ,("M-C-<Left>", prevWS )
             ,("M-C-<Right>", nextWS )
             ,("M-S-<Left>", shiftToPrev )

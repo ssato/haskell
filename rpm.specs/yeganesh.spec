@@ -46,7 +46,7 @@ color management, output templates, and extensibility through plugins.
 
 %files
 %doc LICENSE
-%attr(755,root,root) %{_bindir}/%{name}
+%attr(755,root,root) %{_bindir}/*
 
 
 %changelog
