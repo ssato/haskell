@@ -58,7 +58,7 @@ numlockMask' = mod2Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-workspaces' = map show [1..5]
+workspaces' = ["1:home", "2:web", "3:mail"] ++ map show [4..7]
 
 
 myKeymaps = [
