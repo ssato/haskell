@@ -10,6 +10,7 @@ License:        BSD
 URL:            http://dmwit.com/yeganesh/%{name}
 Source0:        http://hackage.haskell.org/packages/archive/%{name}/%{version}/%{name}-%{version}.tar.gz
 ExclusiveArch:  %{ghc_arches}
+Requires:       dmenu
 BuildRequires:  ghc-Cabal-devel
 BuildRequires:  ghc-rpm-macros
 Patch1:         yeganesh-2.4-build-wo-xdg.patch
