@@ -7,7 +7,7 @@ Release:        1%{?dist}
 Summary:        A small wrapper utitlity around dmenu
 Group:          User Interface/X
 License:        BSD
-URL:            http://dmwit.com/yeganesh/%{name}
+URL:            http://dmwit.com/yeganesh/
 Source0:        http://hackage.haskell.org/packages/archive/%{name}/%{version}/%{name}-%{version}.tar.gz
 ExclusiveArch:  %{ghc_arches}
 Requires:       dmenu
