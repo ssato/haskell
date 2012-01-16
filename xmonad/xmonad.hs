@@ -4,12 +4,12 @@
 -- * w/o gnome
 -- * w/ xmobar
 -- * w/ trayer
+-- * w/ yeganesh + dmenu
 --
 -- References:
 --  * https://gist.github.com/1136051
+--  * http://www.vicfryzel.com/2010/06/27/obtaining-a-beautiful-usable-xmonad-configuration
 --
---
-
 import XMonad
 import System.Exit
 import System.IO
@@ -49,15 +49,6 @@ modMask' = mod4Mask
 numlockMask' = mod2Mask
 
 
--- The default number of workspaces (virtual screens) and their names.
--- By default we use numeric strings, but any string may be used as a
--- workspace name. The number of workspaces is determined by the length
--- of this list.
---
--- A tagging example:
---
--- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
---
 workspaces' = ["1:home", "2:web", "3:mail"] ++ map show [4..7]
 
 
@@ -65,17 +56,30 @@ workspaces' = ["1:home", "2:web", "3:mail"] ++ map show [4..7]
 dmenu' = "exe=`yeganesh -x -- -nb black -nf white` && eval \"exec $exe\""
 
 
+-- see xrandr(1)
+toggleVgaOutput = vgaEnabled ++ " && " ++ disableVga ++ " || " ++ enableVga
+    where mode = "800x600"
+          layout = "--right-of LVDS"
+          vgaEnabled = "xrandr -q | grep -q \"current " ++ mode ++ "\" >/dev/null 2>/dev/null"
+          disableVga = "xrandr --output VGA --off"
+          enableVga = "xrandr --output VGA --auto " ++ layout ++ " --mode " ++ mode
+
+
+--
+-- See http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html
+-- for keycode names.
+--
 myKeymaps = [
              ("M-<F2>", spawn dmenu')
             ,("M-C-<Left>", prevWS )
             ,("M-C-<Right>", nextWS )
             ,("M-S-<Left>", shiftToPrev )
             ,("M-S-<Right>", shiftToNext )
-            ,("M-S-q", spawn "gnome-session-save --gui --kill")
-            ,("M-S-l", spawn "gnome-screensaver-command -l")
+            ,("M-S-l", spawn "xscreensaver-command -lock")
             ,("<XF86AudioMute>", spawn "amixer -q set Master toggle")
             ,("<XF86AudioLowerVolume>", spawn "amixer -q set Master 10%-")
             ,("<XF86AudioRaiseVolume>", spawn "amixer -q set Master 10%+")
+            ,("<XF86Display>", spawn toggleVgaOutput)
             ]
 
 
@@ -94,8 +98,6 @@ defaults = defaultConfig {
         ,isFullscreen                  --> doFullFloat
         ,className =? "MPlayer"        --> doFloat
         ,className =? "Gimp"           --> doFloat
-        ,className =? "Gnome-terminal" --> doShift "1:home"
-        ,className =? "URxvt"          --> doShift "1:home"
         ,className =? "Firefox"        --> doShift "2:web"
         ,className =? "Thunderbird"    --> doShift "3:mail"
         ]
