@@ -18,8 +18,6 @@ import XMonad.Actions.CycleWS
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers 
-import XMonad.Prompt(defaultXPConfig)
-import XMonad.Prompt.Shell(shellPrompt)
 import XMonad.Util.EZConfig
 import XMonad.Util.Run(spawnPipe)
 
