@@ -31,6 +31,7 @@ BuildRequires:  hscolour
 # BR any C devel dependency here
 # list ghc-*-prof dependencies:
 BuildRequires:  ghc-base-devel
+BuildRequires:  xosd-devel
 
 
 %description
