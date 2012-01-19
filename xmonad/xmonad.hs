@@ -11,15 +11,18 @@
 --  * http://www.vicfryzel.com/2010/06/27/obtaining-a-beautiful-usable-xmonad-configuration
 --
 import XMonad
-import System.Exit
-import System.IO
-
 import XMonad.Actions.CycleWS
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers 
 import XMonad.Util.EZConfig
 import XMonad.Util.Run(spawnPipe)
+
+import Data.Char(isDigit)
+import Data.List(find, isPrefixOf)
+import System.Process(readProcessWithExitCode)
+import System.Exit
+import System.IO
 
 
 -- modMask lets you specify which modkey you want to use. The default
@@ -63,6 +66,45 @@ toggleVgaOutput = vgaEnabled ++ " && " ++ disableVga ++ " || " ++ enableVga
           enableVga = "xrandr --output VGA --auto " ++ layout ++ " --mode " ++ mode
 
 
+-- reference:
+-- http://code.google.com/p/xmonad/issues/attachmentText?id=413&aid=-5265428714529951209&name=xmonad.hs&token=d4312fbc3743366f82e4e1cea9c9e540
+volumeUp :: X ()
+volumeUp = spawn "amixer -q set Master 10%+"
+
+volumeDown :: X ()
+volumeDown = spawn "amixer -q set Master 10%-"
+
+toggleMute :: X ()
+toggleMute = spawn "amixer set Master toggle"
+
+runOutput :: String -> IO String
+runOutput cmd =
+    let cs = words cmd; c = head cs; args = tail cs in
+        do (rc, out, err) <- readProcessWithExitCode c args ""
+           if rc == ExitSuccess then return out else return ""
+
+
+{-
+getCurrentVolume :: IO Int
+getCurrentVolume = do
+    out <- runOutput "amixer get Master"
+    let Just l = find (isPrefixOf "  Front Left:") . lines out
+    let volume = read $ Prelude.filter isDigit $ words l !! 4
+    return volume
+
+getCurrentVolLevel :: IO Int
+getCurrentVolLevel = getCurrentVolume >>= \v -> return $ v `div` 20
+
+
+displayOsd :: String -> X ()
+displayOsd s = spawn "echo " ++ s ++ " | osd_cat -p middle -A center -s 10 -c limegreen -f \"-*-*-bold-r-*-*-64-*-*-*-*-*-*-*\""
+
+
+displayVol :: X ()
+displayVol = getCurrentVolLevel >>= \v -> displayOsd $ take v $ repeat '|'
+
+-}
+
 --
 -- See http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html
 -- for keycode names.
@@ -74,9 +116,9 @@ myKeymaps = [
             ,("M-S-<Left>", shiftToPrev )
             ,("M-S-<Right>", shiftToNext )
             ,("M-S-l", spawn "xscreensaver-command -lock")
-            ,("<XF86AudioMute>", spawn "amixer -q set Master toggle")
-            ,("<XF86AudioLowerVolume>", spawn "amixer -q set Master 10%-")
-            ,("<XF86AudioRaiseVolume>", spawn "amixer -q set Master 10%+")
+            ,("<XF86AudioMute>", toggleMute)
+            ,("<XF86AudioLowerVolume>", volumeDown)
+            ,("<XF86AudioRaiseVolume>", volumeUp)
             ,("<XF86Display>", spawn toggleVgaOutput)
             ]
 
