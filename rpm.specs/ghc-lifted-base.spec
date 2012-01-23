@@ -11,7 +11,7 @@
 %global common_description A %{pkg_name} library for Haskell.
 
 Name:           ghc-%{pkg_name}
-Version:        0.1.0.2
+Version:        0.1.0.3
 Release:        0%{?dist}
 Summary:        %{common_summary}
 Group:          System Environment/Libraries
