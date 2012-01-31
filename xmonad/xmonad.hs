@@ -34,22 +34,6 @@ import System.IO
 modMask' = mod4Mask
 
 
--- The mask for the numlock key. Numlock status is "masked" from the
--- current modifier status, so the keybindings will work with numlock on or
--- off. You may need to change this on some systems.
---
--- You can find the numlock modifier by running "xmodmap" and looking for a
--- modifier with Num_Lock bound to it:
---
--- > $ xmodmap | grep Num
--- > mod2        Num_Lock (0x4d)
---
--- Set numlockMask = 0 if you don't have a numlock key, or want to treat
--- numlock status separately.
---
-numlockMask' = mod2Mask
-
-
 workspaces' = ["1:home", "2:web", "3:mail"] ++ map show [4..7]
 
 
@@ -123,15 +107,16 @@ myKeymaps = [
             ]
 
 
+-- see also:
+-- file:///usr/share/doc/ghc/html/libraries/xmonad-0.10/XMonad-Core.html#t:XConfig
 defaults = defaultConfig {
-     terminal           = "urxvt"
+     normalBorderColor  = "#dddddd"
+    ,focusedBorderColor = "#3366cc"
+    ,terminal           = "urxvt"
     ,focusFollowsMouse  = True
     ,borderWidth        = 1
     ,modMask            = modMask'
-    ,numlockMask        = numlockMask'
     ,workspaces         = workspaces'
-    ,normalBorderColor  = "#dddddd"
-    ,focusedBorderColor = "#3366cc"
     ,manageHook         = composeAll
         [
          manageDocks
