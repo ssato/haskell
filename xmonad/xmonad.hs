@@ -99,7 +99,7 @@ myKeymaps = [
             ,("M-C-<Right>", nextWS )
             ,("M-S-<Left>", shiftToPrev )
             ,("M-S-<Right>", shiftToNext )
-            ,("M-S-l", spawn "xscreensaver-command -lock")
+            ,("M-C-l", spawn "xscreensaver-command -lock")
             ,("<XF86AudioMute>", toggleMute)
             ,("<XF86AudioLowerVolume>", volumeDown)
             ,("<XF86AudioRaiseVolume>", volumeUp)
