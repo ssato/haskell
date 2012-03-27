@@ -2,15 +2,16 @@
 # https://fedoraproject.org/wiki/Packaging:Haskell
 # https://fedoraproject.org/wiki/PackagingDrafts/Haskell
 
-%global pkg_name vector-space-points
+%global pkg_name deepseq
 %global common_summary Haskell %{pkg_name} library
-%global common_description A Haskell library provides a type for points, as distinct from vectors, built on top of Data.AffineSpace.
+%global common_description A %{pkg_name} library for Haskell.
 
 
 Name:           ghc-%{pkg_name}
-Version:        0.1.1.0
-Release:        1%{?dist}
+Version:        1.3.0.0
+Release:        ss1%{?dist}
 Summary:        %{common_summary}
+
 Group:          System Environment/Libraries
 License:        BSD
 # BEGIN cabal2spec
@@ -20,9 +21,8 @@ ExclusiveArch:  %{ghc_arches}
 BuildRequires:  ghc-Cabal-devel
 BuildRequires:  ghc-rpm-macros %{!?without_hscolour:hscolour}
 # END cabal2spec
+BuildRequires:  ghc-array-devel
 BuildRequires:  ghc-base-devel
-BuildRequires:  ghc-newtype-devel
-BuildRequires:  ghc-vector-space-devel
 
 
 %description
@@ -54,7 +54,7 @@ BuildRequires:  ghc-vector-space-devel
 
 
 %changelog
-* Tue Mar 27 2012 Satoru SATOH <ssato@redhat.com> - 0.1.1.0-1
+* Tue Mar 27 2012 Satoru SATOH <ssato@redhat.com> - 1.3.0.0-ss1
 - Added build time dependencies
 
 * Tue Mar 27 2012 Fedora Haskell SIG <haskell-devel@lists.fedoraproject.org>

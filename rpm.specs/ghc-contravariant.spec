@@ -2,13 +2,13 @@
 # https://fedoraproject.org/wiki/Packaging:Haskell
 # https://fedoraproject.org/wiki/PackagingDrafts/Haskell
 
-%global pkg_name containers
+%global pkg_name contravariant
 %global common_summary Haskell %{pkg_name} library
 %global common_description A %{pkg_name} library for Haskell.
 
 
 Name:           ghc-%{pkg_name}
-Version:        0.4.2.1
+Version:        0.1.3
 Release:        1%{?dist}
 Summary:        %{common_summary}
 Group:          System Environment/Libraries
@@ -20,9 +20,8 @@ ExclusiveArch:  %{ghc_arches}
 BuildRequires:  ghc-Cabal-devel
 BuildRequires:  ghc-rpm-macros %{!?without_hscolour:hscolour}
 # END cabal2spec
-BuildRequires:  ghc-array-devel
 BuildRequires:  ghc-base-devel
-BuildRequires:  ghc-deepseq-devel
+BuildRequires:  ghc-transformers-devel
 
 
 %description
@@ -54,7 +53,7 @@ BuildRequires:  ghc-deepseq-devel
 
 
 %changelog
-* Tue Mar 27 2012 Satoru SATOH <ssato@redhat.com> - 0.4.2.1-1
+* Tue Mar 27 2012 Satoru SATOH <ssato@redhat.com> - 0.1.3-1
 - Added build time dependencies
 
 * Tue Mar 27 2012 Fedora Haskell SIG <haskell-devel@lists.fedoraproject.org>
