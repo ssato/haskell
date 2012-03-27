@@ -19,7 +19,9 @@ gnome-keyring-daemon --start
 
 #xcompmgr -c C -f -F &
 
-trayer --edge top --align right --transparent true --tint 0x000000 --height 20 --alpha 255 &
+GTK2_RC_FILES=/usr/share/themes/Paranoid/gtk-2.0/gtkrc trayer --edge top --align right --tint 0x000000 --height 22
+#trayer --edge top --align right --transparent true --tint 0x000000 --height 20 --alpha 255 &
+
 nm-applet --sm-disable &
 ibus-daemon -r -x -d
 xscreensaver &
