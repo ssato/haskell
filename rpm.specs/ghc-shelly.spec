@@ -3,16 +3,14 @@
 # https://fedoraproject.org/wiki/PackagingDrafts/Haskell
 
 %global pkg_name shelly
-
 %global common_summary Haskell %{pkg_name} library
-
 %global common_description A %{pkg_name} library for Haskell.
+
 
 Name:           ghc-%{pkg_name}
 Version:        0.3.0.1
 Release:        1%{?dist}
 Summary:        %{common_summary}
-
 Group:          System Environment/Libraries
 License:        BSD
 # BEGIN cabal2spec
@@ -21,6 +19,7 @@ Source0:        http://hackage.haskell.org/packages/archive/%{pkg_name}/%{versio
 ExclusiveArch:  %{ghc_arches}
 BuildRequires:  ghc-Cabal-devel
 BuildRequires:  ghc-rpm-macros %{!?without_hscolour:hscolour}
+# END cabal2spec
 BuildRequires:  ghc-base-devel
 BuildRequires:  ghc-time-devel
 BuildRequires:  ghc-directory-devel
@@ -30,7 +29,7 @@ BuildRequires:  ghc-text-devel
 BuildRequires:  ghc-unix-compat-devel
 BuildRequires:  ghc-system-filepath-devel
 BuildRequires:  ghc-system-fileio-devel
-# END cabal2spec
+
 
 %description
 %{common_description}
