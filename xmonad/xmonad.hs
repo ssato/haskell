@@ -38,6 +38,8 @@ workspaces' = ["1:home", "2:web", "3:mail"] ++ map show [4..7]
 
 
 -- dmenu' = "dmenu_run -nb black -nf white")
+-- rpm spec for yeganesh is available from my git repo:
+--   https://github.com/ssato/misc.git
 dmenu' = "exe=`yeganesh -x -- -nb black -nf white` && eval \"exec $exe\""
 
 

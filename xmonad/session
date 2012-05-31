@@ -9,6 +9,8 @@
 # Xsession and xinitrc scripts which has been factored out to avoid duplication
 source /etc/X11/xinit/xinitrc-common
 
+sleep 2
+
 # This must be started before seahorse-daemon.
 eval $(gnome-keyring-daemon)
 export GNOME-KEYRING-SOCKET
@@ -29,5 +31,6 @@ xscreensaver &
 ## Done in /etc/X11/xinit/xinitrc-common:
 #xmodmap -merge $HOME/.Xmodmap
 #xrdb -merge $HOME/.Xresources
+setxkbmap -option ctrl:nocaps
 
 $CK_XINIT_SESSION $SSH_AGENT xmonad
