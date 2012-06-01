@@ -29,7 +29,6 @@ nm-applet --sm-disable &
 ibus-daemon -r -x -d
 xscreensaver &
 
-setxkbmap -layout us
-setxkbmap -option ctrl:nocaps 
+setxkbmap -option ctrl:nocaps -layout us
 
 $SSH_AGENT xmonad
