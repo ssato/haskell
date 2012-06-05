@@ -1,48 +1,44 @@
--- rotate PDF with using pdftk
+{-# LANGUAGE OverloadedStrings, ViewPatterns #-}
+-- Ngram sample
 --
--- build: ghc --make -threaded -O2 pdfRotate.hs -o pdfRotate
+-- build: ghc --make -O2 <this_file>
 --
 -- Author: Satoru SATOH <ssato@redhat.com>
 -- License: MIT
 
 module Main (main) where
 
-import qualified System.IO.UTF8 as U
+import qualified Data.Text.Lazy as T
+import qualified Data.Text.Lazy.IO as TI
 
-import Data.List(tails, sort, group)
 import Control.Arrow ((&&&))
 import Control.Monad
+import Data.Int(Int64)
+import Data.List(filter, sort, group, length)
 import System.Environment(getArgs, getProgName)
 
 
--- tails in Data.List but easily defined as follows for example:
---
--- tails :: [a] -> [[a]]
--- tails [] = [[]]
--- tails x:xs = (x:xs) : tails xs
-
 -- copied from http://nlpwp.org/book/chap-ngrams.xhtml:
-ngrams :: Int -> [a] -> [[a]]
-ngrams n = filter ((==) n . length) . map (take n) . tails
+ngrams :: Int64 -> T.Text -> [T.Text]
+ngrams n = filter ((==) n . T.length) . map (T.take n) . T.tails
 
-nngram :: Int -> String -> [(String, Int)]
+nngram :: Int64 -> T.Text -> [(T.Text, Int)]
 nngram n = map (head &&& length) . group . sort . ngrams n
 
-printNNgrams :: Int -> FilePath -> IO ()
-printNNgrams n path = U.readFile path >>= mapM_ pp . nngram n
+printNNgrams :: Int64 -> FilePath -> IO ()
+printNNgrams n path = TI.readFile path >>= mapM_ pp . nngram n
     where 
-          pp :: (String, Int) -> IO ()
-          pp (s, n) = U.putStrLn $ s ++ " " ++ show n
+          pp :: (T.Text, Int) -> IO ()
+          pp (t, n) = TI.putStrLn $ T.append t $ T.pack $ " " ++ show n
 
 
 main = do prog <- getProgName
           args <- getArgs
           case args of 
             ('-':cs):xs -> usage prog
-            fs | length fs > 0 -> mapM_ (printNNgrams n) fs
+            (n:fs) | length fs > 0 -> mapM_ (printNNgrams (read n)) fs
             _ -> usage prog
     where 
-          n = 3
           usage :: String -> IO ()
           usage prog = putStrLn $ "Usage: " ++ prog ++ " INPUT_FILE_0 [INPUT_FILE_1 ...]"
 
