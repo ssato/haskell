@@ -16,7 +16,7 @@ eval $(gnome-keyring-daemon)
 export GNOME-KEYRING-SOCKET
 export GNOME-KEYRING-PID
 
-## Workaround for rhbz#662528
+## Workaround for https://bugzilla.gnome.org/show_bug.cgi?id=662528:
 export $(gnome-keyring-daemon --start)
 #export SSH_AUTH_SOCK="$GNOME_KEYRING_CONTROL/ssh"
 
@@ -29,9 +29,6 @@ nm-applet --sm-disable &
 ibus-daemon -r -x -d
 xscreensaver &
 
-## Done in /etc/X11/xinit/xinitrc-common:
-#xmodmap -merge $HOME/.Xmodmap
-#xrdb -merge $HOME/.Xresources
-setxkbmap -option ctrl:nocaps 
+setxkbmap -option ctrl:nocaps -layout us
 
 $SSH_AGENT xmonad
