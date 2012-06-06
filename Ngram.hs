@@ -14,7 +14,7 @@ import qualified Data.Text.Lazy.IO as TI
 import Control.Arrow ((&&&))
 import Control.Monad
 import Data.Int(Int64)
-import Data.List(filter, sort, group, length)
+import Data.List(filter, sort, group, length, tails)
 import System.Environment(getArgs, getProgName)
 
 
@@ -36,26 +36,25 @@ printNNgrams n path = TI.readFile path >>= mapM_ pp . nngram n
 wngrams :: Int -> [T.Text] -> [[T.Text]]
 wngrams n = filter ((==) n . length) . map (take n) . tails
 
-nwngram :: Int64 -> [T.Text] -> [([T.Text], Int)]
+nwngram :: Int -> [T.Text] -> [([T.Text], Int)]
 nwngram n = map (head &&& length) . group . sort . wngrams n
 
-printNWNgrams :: Int64 -> FilePath -> IO ()
+printNWNgrams :: Int -> FilePath -> IO ()
 printNWNgrams n path = TI.readFile path >>= mapM_ pp . nwngram n . T.words
     where 
           pp :: ([T.Text], Int) -> IO ()
-          pp (ts, n) = TI.putStrLn $ T.append (show ts) $ T.pack $ " " ++ show n
+          pp (ts, n) = TI.putStrLn $ T.append (T.intercalate ", " ts) $ T.pack $ " " ++ show n
 
 
 main = do prog <- getProgName
           args <- getArgs
           case args of 
-            '-':'w':' ':n:fs | length fs > 0 -> mapM_ (printNWNgrams (read n)) fs
-            ('-':cs):xs -> usage prog
+            ("-w":n:fs) | length fs > 0 -> mapM_ (printNWNgrams (read n)) fs
             (n:fs) | length fs > 0 -> mapM_ (printNNgrams (read n)) fs
             _ -> usage prog
     where 
           usage :: String -> IO ()
-          usage prog = putStrLn $ "Usage: " ++ prog ++ " INPUT_FILE_0 [INPUT_FILE_1 ...]"
+          usage prog = putStrLn $ "Usage: " ++ prog ++ " [-w] N INPUT_FILE_0 [INPUT_FILE_1 ...]"
 
 
 -- vim:sw=4:ts=4:et:
