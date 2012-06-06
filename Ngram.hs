@@ -18,7 +18,8 @@ import Data.List(filter, sort, group, length)
 import System.Environment(getArgs, getProgName)
 
 
--- copied from http://nlpwp.org/book/chap-ngrams.xhtml:
+-- copied from http://nlpwp.org/book/chap-ngrams.xhtml and modified to make it
+-- work with Data.Text.Lazy:
 ngrams :: Int64 -> T.Text -> [T.Text]
 ngrams n = filter ((==) n . T.length) . map (T.take n) . T.tails
 
