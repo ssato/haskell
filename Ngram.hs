@@ -31,10 +31,24 @@ printNNgrams n path = TI.readFile path >>= mapM_ pp . nngram n
           pp :: (T.Text, Int) -> IO ()
           pp (t, n) = TI.putStrLn $ T.append t $ T.pack $ " " ++ show n
 
+-- for words:
+wngrams :: Int -> [T.Text] -> [[T.Text]]
+wngrams n = filter ((==) n . length) . map (take n) . tails
+
+nwngram :: Int64 -> [T.Text] -> [([T.Text], Int)]
+nwngram n = map (head &&& length) . group . sort . wngrams n
+
+printNWNgrams :: Int64 -> FilePath -> IO ()
+printNWNgrams n path = TI.readFile path >>= mapM_ pp . nwngram n . T.words
+    where 
+          pp :: ([T.Text], Int) -> IO ()
+          pp (ts, n) = TI.putStrLn $ T.append (show ts) $ T.pack $ " " ++ show n
+
 
 main = do prog <- getProgName
           args <- getArgs
           case args of 
+            '-':'w':' ':n:fs | length fs > 0 -> mapM_ (printNWNgrams (read n)) fs
             ('-':cs):xs -> usage prog
             (n:fs) | length fs > 0 -> mapM_ (printNNgrams (read n)) fs
             _ -> usage prog
