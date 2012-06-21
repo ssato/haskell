@@ -25,6 +25,7 @@ BuildRequires:  ghc-bytestring-devel
 BuildRequires:  ghc-HDBC-devel
 BuildRequires:  ghc-mtl-devel
 BuildRequires:  ghc-utf8-string-devel
+BuildRequires:  sqlite-devel
 
 
 %description
