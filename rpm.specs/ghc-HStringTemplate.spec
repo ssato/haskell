@@ -13,7 +13,7 @@
 
 
 Name:           ghc-%{pkg_name}
-Version:        0.6.6
+Version:        0.6.8
 Release:        1%{?dist}
 Summary:        %{common_summary}
 Group:          System Environment/Libraries
