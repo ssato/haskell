@@ -7,7 +7,9 @@
 %global common_description A %{pkg_name} library for Haskell to provides support for parsing and emitting Yaml documents. 
 
 Name:           ghc-%{pkg_name}
-Version:        0.8.0
+Version:        0.7.0.3
+# Not yet as conduit >= 0.5.x is not available in Fedora yet:
+#Version:        0.8.0
 Release:        1%{?dist}
 Summary:        %{common_summary}
 Group:          System Environment/Libraries
@@ -23,7 +25,9 @@ BuildRequires:  ghc-aeson-devel >= 0.5
 BuildRequires:  ghc-attoparsec-devel
 BuildRequires:  ghc-base-devel
 BuildRequires:  ghc-bytestring-devel >= 0.9.1.4
-BuildRequires:  ghc-conduit-devel >= 0.5.0
+BuildRequires:  ghc-conduit-devel >= 0.4.0
+# Not available in Fedora yet:
+#BuildRequires:  ghc-conduit-devel >= 0.5.0
 BuildRequires:  ghc-containers-devel
 BuildRequires:  ghc-resourcet-devel >= 0.3.0
 BuildRequires:  ghc-text-devel
