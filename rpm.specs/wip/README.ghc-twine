@@ -1,0 +1,22 @@
+I could not resolve build-time error of twine such like:
+
++ ./Setup build
+Preprocessing library twine-0.1.2...
+Building twine-0.1.2...
+[1 of 8] Compiling Text.Twine.Parser.Types ( src/Text/Twine/Parser/Types.hs, dist/build/Text/Twine/Parser/Types.o )
+[2 of 8] Compiling Text.Twine.Interpreter.Types ( src/Text/Twine/Interpreter/Types.hs, dist/build/Text/Twine/Interpreter/Types.o )
+[3 of 8] Compiling Text.Twine.Interpreter.Interface ( src/Text/Twine/Interpreter/Interface.hs, dist/build/Text/Twine/Interpreter/Interface.o )
+src/Text/Twine/Interpreter/Interface.hs:76:49:
+    Could not deduce (TemplateInterface m a)
+      arising from a use of `bind'
+    from the context (Monad m, Convertible a (TwineElement m))
+      bound by the instance declaration
+      at src/Text/Twine/Interpreter/Interface.hs:75:10-86
+    Possible fix:
+      add (TemplateInterface m a) to the context of
+        the instance declaration
+    In the first argument of `map', namely `bind'
+    In the second argument of `(.)', namely `map bind'
+    In the second argument of `(.)', namely `CXListLike . map bind'
+
+...

@@ -1,0 +1,12 @@
+I could not resolve build-time error of press such like:
+
++ ./Setup build
+Preprocessing library press-0.1.2...
+Building press-0.1.2...
+[1 of 5] Compiling Text.Press.Types ( Text/Press/Types.hs, dist/build/Text/Press/Types.o )
+[2 of 5] Compiling Text.Press.Render ( Text/Press/Render.hs, dist/build/Text/Press/Render.o )
+[3 of 5] Compiling Text.Press.Parser ( Text/Press/Parser.hs, dist/build/Text/Press/Parser.o )
+Text/Press/Parser.hs:125:33:
+    Not in scope: data constructor `Parsec.Prim.ParsecT'
+
+...
