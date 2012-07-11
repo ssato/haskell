@@ -1,0 +1,15 @@
+diff -up press-0.1.2/Text/Press/Parser.hs.ParsecT press-0.1.2/Text/Press/Parser.hs
+--- press-0.1.2/Text/Press/Parser.hs.ParsecT	2012-07-11 10:12:55.128034812 +0900
++++ press-0.1.2/Text/Press/Parser.hs	2012-07-11 10:25:31.705576292 +0900
+@@ -121,9 +121,9 @@ strip = f . f
+ 
+ handleParsecError e = error (show e)
+ 
++-- note: Parsec.Prim.ParsecT is not exported in reacent Parsec library
+ failWithParseError :: (Parsec.Prim.Stream s m t) => Parsec.Error.ParseError -> Parsec.Prim.ParsecT s u m a
+-failWithParseError parseError = Parsec.Prim.ParsecT $ 
+-    \s -> return $ Parsec.Prim.Empty $ return $ Parsec.Prim.Error parseError
++failWithParseError = Parsec.Prim.parserFail . show
+ 
+ runSubParser parser state input = do
+     name <- fmap sourceName getPosition
