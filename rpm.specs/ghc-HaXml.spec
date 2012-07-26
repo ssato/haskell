@@ -50,15 +50,11 @@ documents.
 
 %ghc_devel_description
 
+
 %ghc_devel_post_postun
 
 
-%files
-%doc LICENSE*
-%attr(755,root,root) %{_bindir}/%{name}
-
-%ghc_files
-%ghc_add_basepkg_file %{_bindir}/*
+%ghc_files %{_bindir}/*
 
 
 %changelog
