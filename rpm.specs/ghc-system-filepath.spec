@@ -3,16 +3,14 @@
 # https://fedoraproject.org/wiki/PackagingDrafts/Haskell
 
 %global pkg_name system-filepath
-
 %global common_summary Haskell %{pkg_name} library
-
 %global common_description A %{pkg_name} library for Haskell.
+
 
 Name:           ghc-%{pkg_name}
 Version:        0.4.6
 Release:        1%{?dist}
 Summary:        %{common_summary}
-
 Group:          System Environment/Libraries
 License:        MIT
 # BEGIN cabal2spec
@@ -26,6 +24,7 @@ BuildRequires:  ghc-bytestring-devel
 BuildRequires:  ghc-deepseq-devel
 BuildRequires:  ghc-text-devel
 # END cabal2spec
+
 
 %description
 %{common_description}

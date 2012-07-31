@@ -8,7 +8,7 @@
 
 
 Name:           ghc-%{pkg_name}
-Version:        0.3.0.1
+Version:        0.13.3
 Release:        1%{?dist}
 Summary:        %{common_summary}
 Group:          System Environment/Libraries
@@ -21,14 +21,14 @@ BuildRequires:  ghc-Cabal-devel
 BuildRequires:  ghc-rpm-macros %{!?without_hscolour:hscolour}
 # END cabal2spec
 BuildRequires:  ghc-base-devel
-BuildRequires:  ghc-time-devel
 BuildRequires:  ghc-directory-devel
 BuildRequires:  ghc-mtl-devel
 BuildRequires:  ghc-process-devel
-BuildRequires:  ghc-text-devel
-BuildRequires:  ghc-unix-compat-devel
-BuildRequires:  ghc-system-filepath-devel
 BuildRequires:  ghc-system-fileio-devel
+BuildRequires:  ghc-system-filepath-devel
+BuildRequires:  ghc-text-devel
+BuildRequires:  ghc-time-devel
+BuildRequires:  ghc-unix-compat-devel
 
 
 %description
@@ -60,6 +60,9 @@ BuildRequires:  ghc-system-fileio-devel
 
 
 %changelog
+* Tue Jul 31 2012 Satoru SATOH <ssato@redhat.com> - 0.13.3-1
+- New upstream
+
 * Thu Mar 22 2012 Satoru SATOH <ssato@redhat.com> - 0.3.0.1-1
 - Added build requires
 
