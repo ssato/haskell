@@ -12,7 +12,15 @@ if test "x$hkgname" = "x"; then
 fi
 
 info=`cabal info $hkgname`; rc=$?
-pversion=$(echo "$info" | sed -nr 's, *Versions available:.* ([^ ]+)$,\1,p')
+verpart=$(echo "$info" | sed -nr '/Versions/,/Versions/p')
+
+nlines=$(echo "$verpart" | wc -l 2>/dev/null)
+if test "$nlines" = "2"; then
+    #pversion=$(echo "$info" | sed -nr 's, *Versions available:.* ([^ ]+)$,\1,p')
+    pversion=$(echo "$verpart" | sed -nr '1s,.* ([^ ]+)$,\1,p')
+else
+    pversion=$(echo "$verpart" | sed -nr "$(( ${nlines} - 1))s,.* ([^ ]+)$,\1,p")
+fi
 
 test "x$builddir" = "x" && builddir="/tmp/$hkgname/$pversion" || :
 
