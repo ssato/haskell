@@ -12,20 +12,16 @@ if test "x$hkgname" = "x"; then
 fi
 
 info=`cabal info $hkgname`; rc=$?
-pversion=$(echo "$info" | sed -nr 's, *Versions available: ([^ ]+),\1,p')
+pversion=$(echo "$info" | sed -nr 's, *Versions available:.* ([^ ]+)$,\1,p')
 
 test "x$builddir" = "x" && builddir="/tmp/$hkgname/$pversion" || :
 
 rpmspec="ghc-$hkgname.spec"
 
-# should we make sure rpm spec previously generated not exist ?
-#test ! -f ghc-$hkgname.spec
-
 test -f $rpmspec || cblrpm $hkgname
-#test -f $rpmspec && cp -f $rpmspec $builddir
 
 tgz=$HOME/.cabal/packages/hackage.haskell.org/$hkgname/$pversion/$hkgname-$pversion.tar.gz
-test -f $tgz  # check tgz exists.
+test -f $tgz || cabal fetch $hkgname
 
 rpmbuild_ () {
     rpmbuild --define "_topdir ${builddir}" \
